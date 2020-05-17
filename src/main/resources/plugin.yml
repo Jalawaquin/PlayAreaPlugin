@@ -1,0 +1,10 @@
+name: PlayArea
+version: ${project.version}
+main: me.jalawaquin.playarea.PlayArea
+api-version: 1.13
+authors: [Jalawaquin]
+commands:
+  setPlayArea:
+    description: set play area
+    aliases: setPlay
+
