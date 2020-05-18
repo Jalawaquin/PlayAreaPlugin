@@ -21,16 +21,20 @@ public class PlayEvents implements Listener {
         Player player = event.getPlayer();
         ItemStack itemstack = player.getInventory().getItemInMainHand();
         Block block = event.getClickedBlock();
+        if (player.hasPermission("playarea.playevents"))
+        {
+            if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
+                if (itemstack.getType().equals(Material.GOLDEN_HOE) && itemstack.getItemMeta().getDisplayName().equals(ChatColor.LIGHT_PURPLE + "Play Area Tool")){
+                    Location block_location_ = block.getLocation();
 
-        if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
-            if (itemstack.getType().equals(Material.GOLDEN_HOE) && itemstack.getItemMeta().getDisplayName().equals(ChatColor.LIGHT_PURPLE + "Play Area Tool")){
-                Location block_location_ = block.getLocation();
-
-                getServer().getPluginManager().callEvent(new PlotAreaEvent(player,block_location_));
+                    getServer().getPluginManager().callEvent(new PlotAreaEvent(player,block_location_));
+                }
             }
-
         }
-
+        else{
+            player.sendMessage("You do not have the required permissions to use this tool.");
+        }
     }
+
 
 }
