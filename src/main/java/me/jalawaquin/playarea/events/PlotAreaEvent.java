@@ -1,38 +1,42 @@
 package me.jalawaquin.playarea.events;
 
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class PlotAreaEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 
+    private static List<Block> blocks = new ArrayList<>();
     private Player player;
-    private Location[] block_locations = new Location[2];
-    private int num_of_locations;
+    private Location loc1,loc2;
 
-    public PlotAreaEvent(Player player_, Location block_location_){
+    public PlotAreaEvent(Player player_, Location loc1_, Location loc2_){
         this.player = player_;
-        this.num_of_locations = 0;
-        this.block_locations[num_of_locations] = block_location_;
+        this.loc1 = loc1_;
+        this.loc2 = loc2_;
     }
 
     public Player getPlayer() {
-        return this.player;
+        return player;
     }
 
-    public Location[] getBlock_location() {
-        return this.block_locations;
+    public Location getLoc1() {
+        return loc1;
     }
 
-    public int getNum_of_locations(){
-        return this.num_of_locations;
+    public Location getLoc2() {
+        return loc2;
     }
-    //----------------------------------------------------
+
+    //----------------------------------------------------------------------
     public HandlerList getHandlers(){
         return handlers;
     }
