@@ -1,6 +1,7 @@
 package me.jalawaquin.playarea.events;
 
 
+import me.jalawaquin.playarea.listeners.PlotAreaListener;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -49,20 +50,23 @@ public class PlayEvents implements Listener {
                     }
                 }
                 else {
-                    player.sendMessage("You do not have the required permissions to use this tool.");
+                    player.sendMessage(ChatColor.RED + "You do not have the required permissions to use this tool.");
                 }
             }
         }
     }
 
     public void delete_locations(Player player){
+        PlotAreaEvent event = new PlotAreaEvent();
+        PlotAreaListener listener = new PlotAreaListener();
+        listener.deletePlot();
+
         for (int i = 0; i < 2; i++){
             this.block_locations[i] = null;
         }
         this.num_of_locations = 0;
 
-        player.sendMessage("You have deleted your plot");
-
+        player.sendMessage("Plot deleted");
     }
 
 }
