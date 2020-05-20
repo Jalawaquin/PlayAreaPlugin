@@ -16,22 +16,18 @@ public class PlotAreaEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 
-    private static List<Block> blocks = new ArrayList<>();
+    //private static List<Block> blocks = new ArrayList<>();
     private Player player;
     private Location loc1,loc2;
 
-    public PlotAreaEvent(){
-        this.blocks.clear();
-        this.loc1 = null;
-        this.loc2 = null;
-    }
     public PlotAreaEvent(Player player_, Location loc1_, Location loc2_){
         this.player = player_;
         this.loc1 = loc1_;
         this.loc2 = loc2_;
     }
 
-    public void setPlotArea(){
+    public List<Block> getPlotArea(){
+        List<Block> blocks = new ArrayList<>();
         if (loc1.getWorld() != loc2.getWorld()){
             player.sendMessage(ChatColor.RED + "Cannot set Play Area across worlds");
             throw new IllegalArgumentException("Cannot set Play Area across worlds");
@@ -41,11 +37,14 @@ public class PlotAreaEvent extends Event {
 
         int minX = Math.min(loc1.getBlockX(), loc2.getBlockX());
         int minY = Math.min(loc1.getBlockY(), loc2.getBlockY());
+        // int minY = 0;
         int minZ = Math.min(loc1.getBlockZ(), loc2.getBlockZ());
 
         int maxX = Math.max(loc1.getBlockX(), loc2.getBlockX());
         int maxY = Math.max(loc1.getBlockY(), loc2.getBlockY());
+        //int maxY = world.getMaxHeight();
         int maxZ = Math.max(loc1.getBlockZ(), loc2.getBlockZ());
+
 
         for (int x = minX; x <= maxX; x++){
             for(int y = minY;  y <= maxY; y++){
@@ -54,14 +53,13 @@ public class PlotAreaEvent extends Event {
                 }
             }
         }
-        player.sendMessage("Plot set");
+
+        return blocks;
     }
 
     public Player getPlayer() {
         return player;
     }
-
-    public static List<Block> getBlocks() { return blocks; }
 
     public Location getLoc1() {
         return loc1;

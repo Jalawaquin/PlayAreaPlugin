@@ -15,8 +15,8 @@ public class PlotAreaListener implements Listener {
 
     @EventHandler
     public void PlotSave(PlotAreaEvent event){
-        event.setPlotArea();
-        this.blocks = event.getBlocks();
+        this.blocks = event.getPlotArea();
+        event.getPlayer().sendMessage("Plot set");
 
     }
 
