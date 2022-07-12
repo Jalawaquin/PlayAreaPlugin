@@ -36,13 +36,12 @@ public class PlotAreaEvent extends Event {
         World world = loc1.getWorld();
 
         int minX = Math.min(loc1.getBlockX(), loc2.getBlockX());
-        int minY = Math.min(loc1.getBlockY(), loc2.getBlockY());
-        // int minY = 0;
-        int minZ = Math.min(loc1.getBlockZ(), loc2.getBlockZ());
-
         int maxX = Math.max(loc1.getBlockX(), loc2.getBlockX());
+        // int minY = 0;
+        int minY = Math.min(loc1.getBlockY(), loc2.getBlockY());
         int maxY = Math.max(loc1.getBlockY(), loc2.getBlockY());
         //int maxY = world.getMaxHeight();
+        int minZ = Math.min(loc1.getBlockZ(), loc2.getBlockZ());
         int maxZ = Math.max(loc1.getBlockZ(), loc2.getBlockZ());
 
 
