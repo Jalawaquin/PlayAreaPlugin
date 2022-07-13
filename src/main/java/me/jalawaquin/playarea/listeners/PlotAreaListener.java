@@ -10,24 +10,29 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 public class PlotAreaListener implements Listener {
-    private static List<Block> blocks = new ArrayList<>();
+    private static HashMap<String, UUID> blocks = new HashMap<>();
 
     @EventHandler
     public void PlotSave(PlotAreaEvent event){
         this.blocks = event.getPlotArea();
-        event.getPlayer().sendMessage("Plot set");
+        event.getPlayer().sendMessage( "Plot set");
 
     }
-
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event){
         Player player = event.getPlayer();
 
-        if (blocks.contains(event.getTo().getBlock()) && !blocks.contains(event.getFrom().getBlock())){
-           player.sendMessage("You are now entering the play area.");
+        String currentBlockTo = event.getTo().getBlockX() + "." + event.getTo().getBlockZ();
+        String currentBlockFrom = event.getFrom().getBlockX() + "." + event.getFrom().getBlockZ();
+
+        if (blocks.containsKey(currentBlockTo) && !blocks.containsKey(currentBlockFrom)){
+            player.sendMessage("You are now entering the play area.");
         }
-        else if (!blocks.contains(event.getTo().getBlock()) && blocks.contains(event.getFrom().getBlock())){
+        else if (!blocks.containsKey(currentBlockTo) && blocks.containsKey(currentBlockFrom)){
             player.sendMessage("You are now leaving the play area");
         }
     }

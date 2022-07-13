@@ -12,10 +12,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+
+import java.util.HashMap;
+import java.util.UUID;
 
 import static org.bukkit.Bukkit.getServer;
 
@@ -35,9 +37,12 @@ public class PlayEvents implements Listener {
                 if (player.hasPermission("playarea.playevents")) {
                     Location block_loc = block.getLocation();
 
+
                     if (num_of_locations < 2){
                         block_locations[num_of_locations] = block_loc;
+
                         player.sendMessage("Location " + num_of_locations + ": ");
+
                         player.sendMessage("X: " + block_locations[num_of_locations].getBlockX());
                         player.sendMessage("Y: " + block_locations[num_of_locations].getBlockY());
                         player.sendMessage("Z: " + block_locations[num_of_locations].getBlockZ());
@@ -56,6 +61,7 @@ public class PlayEvents implements Listener {
         }
     }
 
+
     public void delete_locations(Player player){
         PlotAreaListener listener = new PlotAreaListener();
         listener.deletePlot();
@@ -65,5 +71,4 @@ public class PlayEvents implements Listener {
         this.num_of_locations = 0;
         player.sendMessage("Plot deleted");
     }
-
 }

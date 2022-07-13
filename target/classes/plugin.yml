@@ -1,0 +1,12 @@
+name: PlayArea
+version: 1.0-SNAPSHOT
+main: me.jalawaquin.playarea.PlayArea
+api-version: 1.13
+authors: [Jalawaquin]
+commands:
+  setPlayArea:
+    description: set the play area
+    aliases: setplayarea
+  deletePlayArea:
+    description: delete the play area
+    aliases: deleteplayarea

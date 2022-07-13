@@ -8,15 +8,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.UUID;
 
 
 public class PlotAreaEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 
-    //private static List<Block> blocks = new ArrayList<>();
     private Player player;
     private Location loc1,loc2;
 
@@ -26,31 +25,25 @@ public class PlotAreaEvent extends Event {
         this.loc2 = loc2_;
     }
 
-    public List<Block> getPlotArea(){
-        List<Block> blocks = new ArrayList<>();
+    public HashMap<String, UUID> getPlotArea(){
+        HashMap<String, UUID> blocks = new HashMap<>();
+
         if (loc1.getWorld() != loc2.getWorld()){
             player.sendMessage(ChatColor.RED + "Cannot set Play Area across worlds");
             throw new IllegalArgumentException("Cannot set Play Area across worlds");
         }
 
-        World world = loc1.getWorld();
-
         int minX = Math.min(loc1.getBlockX(), loc2.getBlockX());
-        int minY = Math.min(loc1.getBlockY(), loc2.getBlockY());
-        // int minY = 0;
-        int minZ = Math.min(loc1.getBlockZ(), loc2.getBlockZ());
-
         int maxX = Math.max(loc1.getBlockX(), loc2.getBlockX());
-        int maxY = Math.max(loc1.getBlockY(), loc2.getBlockY());
-        //int maxY = world.getMaxHeight();
+
+        int minZ = Math.min(loc1.getBlockZ(), loc2.getBlockZ());
         int maxZ = Math.max(loc1.getBlockZ(), loc2.getBlockZ());
 
-
         for (int x = minX; x <= maxX; x++){
-            for(int y = minY;  y <= maxY; y++){
-                for(int z = minZ; z <= maxZ; z++){
-                    blocks.add(world.getBlockAt(x,y,z));
-                }
+            for(int z = minZ; z <= maxZ; z++){
+                String blockID = x + "." + z;
+
+                blocks.put(blockID, player.getUniqueId());
             }
         }
 

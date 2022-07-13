@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PlayAreaPlugin:jar">
+    <output-path>$USER_HOME$/Desktop/Plugins/Server/plugins</output-path>
+    <root id="archive" name="PlayAreaPlugin.jar">
+      <element id="module-output" name="PlayAreaPlugin" />
+    </root>
+  </artifact>
+</component>
