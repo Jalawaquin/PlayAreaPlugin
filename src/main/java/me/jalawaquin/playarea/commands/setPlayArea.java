@@ -1,5 +1,6 @@
 package me.jalawaquin.playarea.commands;
 
+import me.jalawaquin.playarea.listeners.PlotAreaListener;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -17,7 +18,9 @@ public class setPlayArea implements CommandExecutor {
 
         if (sender instanceof Player) {
             Player player = (Player) sender;
+
             if(player.hasPermission("playarea.setplayarea")){
+
                 ItemStack itemstack = new ItemStack(Material.GOLDEN_HOE, 1);
                 ItemMeta meta = itemstack.getItemMeta();
 
@@ -34,7 +37,6 @@ public class setPlayArea implements CommandExecutor {
             }
 
         }
-
 
         return false;
     }
