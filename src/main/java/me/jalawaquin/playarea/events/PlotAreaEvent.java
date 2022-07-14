@@ -2,8 +2,6 @@ package me.jalawaquin.playarea.events;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -13,9 +11,7 @@ import java.util.UUID;
 
 
 public class PlotAreaEvent extends Event {
-
     private static final HandlerList handlers = new HandlerList();
-
     private Player player;
     private Location loc1,loc2;
 

@@ -1,6 +1,5 @@
 package me.jalawaquin.playarea.commands;
 
-import me.jalawaquin.playarea.listeners.PlotAreaListener;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -11,11 +10,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class setPlayArea implements CommandExecutor {
-
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
@@ -30,12 +26,10 @@ public class setPlayArea implements CommandExecutor {
 
                 itemstack.setItemMeta(meta);
                 player.getInventory().addItem(itemstack);
-
             }
             else{
                 player.sendMessage(ChatColor.RED + "You do not have the required permissions to use this command.");
             }
-
         }
 
         return false;

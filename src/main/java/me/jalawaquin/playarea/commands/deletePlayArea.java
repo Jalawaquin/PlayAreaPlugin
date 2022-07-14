@@ -9,7 +9,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class deletePlayArea implements CommandExecutor {
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
         if (sender instanceof Player){
@@ -22,7 +21,7 @@ public class deletePlayArea implements CommandExecutor {
                     playevents.delete_locations(player);
                 }
                 else{
-                    player.sendMessage(ChatColor.RED + "No Plot Exists.");
+                    player.sendMessage(ChatColor.RED + "Cannot delete play area. No play area exists.");
                 }
             }
             else{

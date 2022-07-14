@@ -1,7 +1,7 @@
 package me.jalawaquin.playarea.events;
 
-
 import me.jalawaquin.playarea.listeners.PlotAreaListener;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,15 +14,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-
-import java.util.HashMap;
-import java.util.UUID;
-
 import static org.bukkit.Bukkit.getServer;
 
 public class PlayEvents implements Listener {
-
     private static Location[] block_locations = new Location[2];
     private static int num_of_locations = 0;
 
@@ -37,15 +31,11 @@ public class PlayEvents implements Listener {
                 if (player.hasPermission("playarea.playevents")) {
                     Location block_loc = block.getLocation();
 
-
                     if (num_of_locations < 2){
                         block_locations[num_of_locations] = block_loc;
 
-                        player.sendMessage("Location " + num_of_locations + ": ");
-
-                        player.sendMessage("X: " + block_locations[num_of_locations].getBlockX());
-                        player.sendMessage("Y: " + block_locations[num_of_locations].getBlockY());
-                        player.sendMessage("Z: " + block_locations[num_of_locations].getBlockZ());
+                        player.sendMessage("Location " + num_of_locations + ": " + "X: " + block_locations[num_of_locations].getBlockX()
+                                + ", Z: " + block_locations[num_of_locations].getBlockZ());
 
                         if (num_of_locations == 1){
                             getServer().getPluginManager().callEvent(new PlotAreaEvent(player, block_locations[0], block_locations[1]));
@@ -61,14 +51,14 @@ public class PlayEvents implements Listener {
         }
     }
 
-
     public void delete_locations(Player player){
         PlotAreaListener listener = new PlotAreaListener();
         listener.deletePlot();
+        listener.turnModifiersOff();
         for (int i = 0; i < 2; i++){
-            this.block_locations[i] = null;
+            block_locations[i] = null;
         }
-        this.num_of_locations = 0;
-        player.sendMessage("Plot deleted");
+        num_of_locations = 0;
+        player.sendMessage("Play Area deleted");
     }
 }
