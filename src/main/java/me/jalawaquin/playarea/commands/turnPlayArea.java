@@ -8,8 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class modPlayArea implements CommandExecutor{
-
+public class turnPlayArea implements CommandExecutor{
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
         if (!(sender instanceof Player)){
@@ -17,7 +16,7 @@ public class modPlayArea implements CommandExecutor{
         }
         Player player = (Player) sender;
 
-        if (!player.hasPermission("playarea.modplayarea")){
+        if (!player.hasPermission("playarea.turnplayarea")){
             player.sendMessage(ChatColor.RED + "You do not have the required permissions to use this command.");
             return false;
         }
@@ -33,19 +32,12 @@ public class modPlayArea implements CommandExecutor{
 
                 if(args[0].toLowerCase().equals("potions"))
                 {
-                    if(listener.playAreaPotions(args[1].toLowerCase())){
+                    if(listener.playAreaPotions(args[1].toLowerCase(), player)){
                         player.sendMessage(ChatColor.GREEN + "Potions modifier turned on !");
+                        player.sendMessage(ChatColor.GREEN + "Utilize /inplayarea and /outplayarea to modify potions !");
                     }
                     else {
                         player.sendMessage(ChatColor.GREEN + "Potions modifier turned off !");
-                    }
-                }
-                else if(args[0].toLowerCase().equals("mobs")){
-                    if(listener.playAreaMobs(args[1].toLowerCase())){
-                        player.sendMessage(ChatColor.GREEN + "Mob modifier turned on !");
-                    }
-                    else {
-                        player.sendMessage(ChatColor.GREEN + "Mob modifier turned off !");
                     }
                 }
                 else {

@@ -54,11 +54,11 @@ public class PlayEvents implements Listener {
     public void delete_locations(Player player){
         PlotAreaListener listener = new PlotAreaListener();
         listener.deletePlot();
-        listener.turnModifiersOff();
+        listener.turnModifiersOff(player);
         for (int i = 0; i < 2; i++){
             block_locations[i] = null;
         }
         num_of_locations = 0;
-        player.sendMessage("Play Area deleted");
+        player.sendMessage(ChatColor.GREEN + "Play area deleted");
     }
 }

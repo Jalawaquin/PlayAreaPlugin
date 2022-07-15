@@ -16,7 +16,6 @@ public class setPlayArea implements CommandExecutor {
             Player player = (Player) sender;
 
             if(player.hasPermission("playarea.setplayarea")){
-
                 ItemStack itemstack = new ItemStack(Material.GOLDEN_HOE, 1);
                 ItemMeta meta = itemstack.getItemMeta();
 

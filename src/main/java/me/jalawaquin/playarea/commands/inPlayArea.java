@@ -7,8 +7,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 public class inPlayArea implements CommandExecutor{
 
@@ -21,7 +19,7 @@ public class inPlayArea implements CommandExecutor{
         Player player = (Player) sender;
 
         if (!player.hasPermission("playarea.inplayarea")){
-            player.sendMessage(ChatColor.RED + "You do not have the required permissions to use this command.");
+            player.sendMessage(ChatColor.RED + "You do not have the required permissions to use this command");
             return false;
         }
 
@@ -30,28 +28,25 @@ public class inPlayArea implements CommandExecutor{
                 PlotAreaListener listener = new PlotAreaListener();
 
                 if(listener.isPlotEmpty()){
-                    player.sendMessage(ChatColor.RED + "Cannot modify inside of play area. No play area exists.");
+                    player.sendMessage(ChatColor.RED + "Cannot modify inside of play area. No play area exists");
                     return false;
                 }
 
-                if(args[0].toLowerCase().equals("potions"))
+                if(args[0].equalsIgnoreCase("potions") && args.length >= 3)
                 {
-                    PotionEffectType potionType = PotionEffectType.getByName(args[1].toUpperCase());
-                    int duration = Integer.parseInt(args[2]);
-                    int amplifier = Integer.parseInt(args[3]);
+                    if(listener.isPotionsModOn()){
+                        String potionType = args[1].toUpperCase();
+                        Integer duration = Integer.parseInt(args[2]);
+                        Integer amplifier = Integer.parseInt(args[3]);
 
-                    listener.setPotions(potionType, duration, amplifier);
-                    player.sendMessage(potionType + "," + duration + "," + amplifier);
+                        listener.setInsidePotionType(potionType, duration, amplifier);
+                    }
+                    else{
+                        player.sendMessage(ChatColor.RED + "Potions modifier is not turned on");
+                    }
                 }
                 else {
                     player.sendMessage(ChatColor.RED + "Invalid Input. /inplayarea potion <effect> <seconds> <amplifier>");
-                }
-
-                if(args[0].toLowerCase().equals("mobs")){
-
-                }
-                else{
-                    player.sendMessage(ChatColor.RED + "Invalid Input. /inplayarea mobs <damageModifier> ");
                 }
             }
             else{
