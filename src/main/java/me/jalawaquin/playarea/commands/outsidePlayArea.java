@@ -1,5 +1,6 @@
 package me.jalawaquin.playarea.commands;
 
+import me.jalawaquin.playarea.settings.PlayAreaMessageSettings;
 import me.jalawaquin.playarea.settings.Plots;
 
 
@@ -30,7 +31,6 @@ public class outsidePlayArea implements CommandExecutor{
 
         try{
             if(args.length >= 2){
-
                 if(plot.isPlotEmpty()){
                     player.sendMessage(ChatColor.RED + "Cannot modify outside of play area. No play area exists");
                     return false;
@@ -49,11 +49,26 @@ public class outsidePlayArea implements CommandExecutor{
                         player.sendMessage(ChatColor.RED + "Potions modifier is not turned on");
                     }
                 }
-                else if(args[0].equalsIgnoreCase("message")){
-                    //messageSettings.setLeaveMessage(args[1]);
+                else if(args[0].equalsIgnoreCase("messages")){
+                    if(plot.isMessageModOn()){
+                        String tmp_message = new String();
+
+                        for(int i = 1; i < args.length; i++) {
+                            if(i == 1){
+                                tmp_message = tmp_message + args[i];
+                                continue;
+                            }
+                            tmp_message = tmp_message + " " + args[i];
+                        }
+                        plot.setMessageSettings(tmp_message, false);
+                        player.sendMessage(ChatColor.GREEN + "Leave message successfully set ! ");
+                    }
+                    else{
+                        player.sendMessage(ChatColor.RED + "Message modifier is not turned on");
+                    }
                 }
-                else {
-                    player.sendMessage(ChatColor.RED + "Invalid Input. /outsideplayarea potion <effect> <seconds> <amplifier>");
+                else{
+                    player.sendMessage(ChatColor.RED + "Invalid Input. /outsideplayarea <modtype> <variable> ....");
                 }
             }
             else{

@@ -29,7 +29,6 @@ public class insidePlayArea implements CommandExecutor{
 
         try{
             if(args.length >= 2){
-
                 if(plot.isPlotEmpty()){
                     player.sendMessage(ChatColor.RED + "Cannot modify inside of play area. No play area exists");
                     return false;
@@ -48,13 +47,18 @@ public class insidePlayArea implements CommandExecutor{
                         player.sendMessage(ChatColor.RED + "Potions modifier is not turned on");
                     }
                 }
-                else if(args[0].equalsIgnoreCase("message")){
-                    if(args[1] != null){
- //                       messageSettings.setEnterMessage(args[1]);
+                else if(args[0].equalsIgnoreCase("messages")){
+                    String tmp_message = new String();
+
+                    for(int i = 1; i < args.length; i++) {
+                        if(i == 1){
+                            tmp_message = tmp_message + args[i];
+                            continue;
+                        }
+                        tmp_message = tmp_message + " " + args[i];
                     }
-                }
-                else {
-                    player.sendMessage(ChatColor.RED + "Invalid Input. /insideplayarea potion <effect> <seconds> <amplifier>");
+                    plot.setMessageSettings(tmp_message, true);
+                    player.sendMessage(ChatColor.GREEN + "Enter message successfully set ! ");
                 }
             }
             else{

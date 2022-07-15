@@ -1,14 +1,5 @@
 package me.jalawaquin.playarea.settings;
 
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.UUID;
-
 public class PlayAreaPotionSettings {
     // are potions or mobs being modified?
     private boolean potions;

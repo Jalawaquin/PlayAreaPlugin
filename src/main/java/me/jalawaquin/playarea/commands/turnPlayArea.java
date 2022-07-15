@@ -43,6 +43,14 @@ public class turnPlayArea implements CommandExecutor{
                         player.sendMessage(ChatColor.GREEN + "Potions modifier turned off !");
                     }
                 }
+                else if(args[0].equalsIgnoreCase("message")){
+                    if(plot.playAreaMessage(args[1].toLowerCase(), player)){
+                        player.sendMessage(ChatColor.GREEN + "Message modifier turned on ! Utilize /insideplayarea and /outsideplayarea to modify enter and leaving messages !");
+                    }
+                    else {
+                        player.sendMessage(ChatColor.GREEN + "Message modifier turned off !");
+                    }
+                }
                 else {
                     invalidInput(player);
                 }

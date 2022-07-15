@@ -21,8 +21,6 @@ public class deletePlayArea implements CommandExecutor {
 
                 if(!plot.isPlotEmpty()){
                     plot.deletePlot(player);
-                    plot.clearPotions(player);
-//                    messageSettings = new PlayAreaMessageSettings();
                 }
                 else{
                     player.sendMessage(ChatColor.RED + "Cannot delete play area. No play area exists.");
