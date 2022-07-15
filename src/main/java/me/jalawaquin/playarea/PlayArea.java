@@ -2,8 +2,10 @@ package me.jalawaquin.playarea;
 
 import me.jalawaquin.playarea.commands.deletePlayArea;
 import me.jalawaquin.playarea.commands.inPlayArea;
+import me.jalawaquin.playarea.commands.outPlayArea;
 import me.jalawaquin.playarea.commands.turnPlayArea;
 import me.jalawaquin.playarea.commands.setPlayArea;
+
 import me.jalawaquin.playarea.events.PlayEvents;
 import me.jalawaquin.playarea.listeners.PlotAreaListener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,6 +20,8 @@ public final class PlayArea extends JavaPlugin {
         getCommand("deletePlayArea").setExecutor(new deletePlayArea());
         getCommand("turnPlayArea").setExecutor(new turnPlayArea());
         getCommand("inPlayArea").setExecutor(new inPlayArea());
+        getCommand("outPlayArea").setExecutor(new outPlayArea());
+
         getServer().getPluginManager().registerEvents(new PlayEvents(),this);
         getServer().getPluginManager().registerEvents(new PlotAreaListener(), this);
     }

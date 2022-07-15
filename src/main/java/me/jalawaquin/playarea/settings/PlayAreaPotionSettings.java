@@ -1,4 +1,4 @@
-package me.jalawaquin.playarea;
+package me.jalawaquin.playarea.settings;
 
 public class PlayAreaPotionSettings {
     private String insidePotionType;

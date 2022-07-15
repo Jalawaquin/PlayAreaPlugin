@@ -1,6 +1,6 @@
 package me.jalawaquin.playarea.listeners;
 
-import me.jalawaquin.playarea.PlayAreaPotionSettings;
+import me.jalawaquin.playarea.settings.PlayAreaPotionSettings;
 import me.jalawaquin.playarea.events.PlotAreaEvent;
 
 import org.bukkit.ChatColor;
@@ -84,21 +84,16 @@ public class PlotAreaListener implements Listener {
     public boolean isPotionsModOn(){
         return potions;
     }
-    public void clearPotions(Player player){
-        if(potionSettings.getInsidePotionType() != null){
-            player.removePotionEffect(Objects.requireNonNull(PotionEffectType.getByName(potionSettings.getInsidePotionType())));
-        }
-        if(potionSettings.getOutsidePotionType() != null){
-            player.removePotionEffect(Objects.requireNonNull(PotionEffectType.getByName(potionSettings.getOutsidePotionType())));
-        }
-
-        potionSettings.clearInsidePotion();
-        potionSettings.clearOutsidePotion();
-    }
     public void setInsidePotionType(String potionsType, int duration, int amplifier){
         potionSettings.setInsidePotionType(potionsType);
         potionSettings.setInsideDuration(duration);
         potionSettings.setInsideAmplifier(amplifier);
+    }
+
+    public void setOutsidePotionType(String potionsType, int duration, int amplifier){
+        potionSettings.setOutsidePotionType(potionsType);
+        potionSettings.setOutsideDuration(duration);
+        potionSettings.setOutsideAmplifier(amplifier);
     }
     // turn on and off modifiers.
     // NOTE: Edit this to take in player and remove potions from player when turning off
@@ -116,6 +111,17 @@ public class PlotAreaListener implements Listener {
     }
 
     // clear modifiers
+    public void clearPotions(Player player){
+        if(potionSettings.getInsidePotionType() != null){
+            player.removePotionEffect(Objects.requireNonNull(PotionEffectType.getByName(potionSettings.getInsidePotionType())));
+        }
+        if(potionSettings.getOutsidePotionType() != null){
+            player.removePotionEffect(Objects.requireNonNull(PotionEffectType.getByName(potionSettings.getOutsidePotionType())));
+        }
+
+        potionSettings.clearInsidePotion();
+        potionSettings.clearOutsidePotion();
+    }
     public void turnModifiersOff(Player player){
         potions = false;
         clearPotions(player);
