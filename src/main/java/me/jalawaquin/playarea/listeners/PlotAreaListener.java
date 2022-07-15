@@ -1,8 +1,9 @@
 package me.jalawaquin.playarea.listeners;
 
-import me.jalawaquin.playarea.settings.Plots;
+import me.jalawaquin.playarea.PlayArea;
 import me.jalawaquin.playarea.settings.PlayAreaMessageSettings;
 import me.jalawaquin.playarea.settings.PlayAreaPotionSettings;
+import me.jalawaquin.playarea.settings.Plots;
 import me.jalawaquin.playarea.events.PlotAreaEvent;
 
 import org.bukkit.ChatColor;
@@ -20,15 +21,9 @@ import java.util.UUID;
 public class PlotAreaListener implements Listener {
 
     private Plots plot;
-    // Potions modifier values (put inside own class)
-    private PlayAreaPotionSettings potionSettings;
-    // Custom Messages
-    private PlayAreaMessageSettings messageSettings;
 
-    public PlotAreaListener(Plots plot, PlayAreaPotionSettings potionSettings, PlayAreaMessageSettings messageSettings){
+    public PlotAreaListener(Plots plot){
         this.plot = plot;
-        this.potionSettings = potionSettings;
-        this.messageSettings = messageSettings;
     }
 
     @EventHandler
@@ -43,14 +38,19 @@ public class PlotAreaListener implements Listener {
         Player player = event.getPlayer();
 
         HashMap<String, UUID> blockArea = plot.getBlockArea();
-        //potion effects
-        String insidePotionType = potionSettings.getInsidePotionType();
-        Integer insideDuration = potionSettings.getInsideDuration();
-        Integer insideAmplifier = potionSettings.getInsideAmplifier();
 
-        String outsidePotionType = potionSettings.getOutsidePotionType();
-        Integer outsideDuration = potionSettings.getOutsideDuration();
-        Integer outsideAmplifier = potionSettings.getOutsideAmplifier();
+        PlayAreaPotionSettings tempPotionSettings = plot.getPotionSettings();
+        PlayAreaMessageSettings tempMessageSettings = plot.getMessageSettings();
+
+        //potion effects
+        String insidePotionType = tempPotionSettings.getInsidePotion();
+        Integer insideDuration = tempPotionSettings.getInsideDuration();
+        Integer insideAmplifier = tempPotionSettings.getInsideAmplifier();
+
+        String outsidePotionType = tempPotionSettings.getOutsidePotion();
+        Integer outsideDuration = tempPotionSettings.getOutsideDuration();
+        Integer outsideAmplifier = tempPotionSettings.getOutsideAmplifier();
+
 
         // When playarea is set check if player is inside or outside of playarea and outside effects
         // blocks
@@ -65,11 +65,11 @@ public class PlotAreaListener implements Listener {
             }
 
             //if potions modifier is on
-            if (potionSettings.isPotionsModOn() && insideDuration != null && insideAmplifier != null) {
+            if (plot.isPotionsModOn() && insideDuration != null && insideAmplifier != null) {
                 // Add Effects if player is inside plot
                 player.addPotionEffect(new PotionEffect(Objects.requireNonNull(PotionEffectType.getByName(insidePotionType)), insideDuration * 20, insideAmplifier));
             }
-            player.sendMessage(ChatColor.YELLOW + messageSettings.getEnterMessage());
+            player.sendMessage(ChatColor.YELLOW + tempMessageSettings.getEnterMessage());
         }
         else if (!blockArea.containsKey(currentBlockTo) && blockArea.containsKey(currentBlockFrom)){
             // Remove inside potion effects if outsidePotionEffect not null
@@ -78,12 +78,12 @@ public class PlotAreaListener implements Listener {
             }
 
             // if potions modifier turned on
-            if(potionSettings.isPotionsModOn() && outsideDuration != null && outsideAmplifier != null){
+            if(plot.isPotionsModOn() && outsideDuration != null && outsideAmplifier != null){
                 //Add Effects if player is outside plot
                 player.addPotionEffect(new PotionEffect(Objects.requireNonNull(PotionEffectType.getByName(outsidePotionType)), outsideDuration * 20, outsideAmplifier));
             }
 
-            player.sendMessage(ChatColor.RED + messageSettings.getLeaveMessage());
+            player.sendMessage(ChatColor.RED + tempMessageSettings.getLeaveMessage());
         }
     }
 

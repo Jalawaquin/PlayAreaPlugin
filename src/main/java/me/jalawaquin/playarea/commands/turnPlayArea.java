@@ -1,8 +1,6 @@
 package me.jalawaquin.playarea.commands;
 
 import me.jalawaquin.playarea.settings.Plots;
-import me.jalawaquin.playarea.settings.PlayAreaMessageSettings;
-import me.jalawaquin.playarea.settings.PlayAreaPotionSettings;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -12,13 +10,9 @@ import org.bukkit.entity.Player;
 
 public class turnPlayArea implements CommandExecutor{
     private Plots plot;
-    private PlayAreaPotionSettings potionSettings;
-    private PlayAreaMessageSettings messageSettings;
 
-    public turnPlayArea(Plots plot, PlayAreaPotionSettings potionSettings, PlayAreaMessageSettings messageSettings){
+    public turnPlayArea(Plots plot){
         this.plot = plot;
-        this.potionSettings = potionSettings;
-        this.messageSettings = messageSettings;
     }
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
@@ -42,7 +36,7 @@ public class turnPlayArea implements CommandExecutor{
 
                 if(args[0].equalsIgnoreCase("potions"))
                 {
-                    if(potionSettings.playAreaPotions(args[1].toLowerCase(), player)){
+                    if(plot.playAreaPotions(args[1].toLowerCase(), player)){
                         player.sendMessage(ChatColor.GREEN + "Potions modifier turned on ! Utilize /insideplayarea and /outsideplayarea to modify potions effects !");
                     }
                     else {

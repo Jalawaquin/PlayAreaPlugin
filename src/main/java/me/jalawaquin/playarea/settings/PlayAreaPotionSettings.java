@@ -12,73 +12,43 @@ import java.util.UUID;
 public class PlayAreaPotionSettings {
     // are potions or mobs being modified?
     private boolean potions;
-    private String insidePotionType;
+    private String insidePotion;
     private Integer insideDuration;
     private Integer insideAmplifier;
 
-    private String outsidePotionType;
+    private String outsidePotion;
     private Integer outsideDuration;
     private Integer outsideAmplifier;
 
     public PlayAreaPotionSettings(){
         this.potions = false;
-        this.insidePotionType = null;
+        this.insidePotion = null;
         this.insideDuration = null;
         this.insideAmplifier = null;
-        this.outsidePotionType = null;
+        this.outsidePotion = null;
         this.outsideDuration = null;
         this.outsideAmplifier = null;
     }
-    public boolean playAreaPotions(String bool, Player player){
-        switch(bool){
-            case "on":
-                potions = true;
-                break;
-            case "off":
-                potions = false;
-                clearPotions(player);
-                break;
-        }
-        return potions;
+    public boolean getPotions(){
+        return this.potions;
     }
 
-    public void setInsidePotionType(HashMap<String, UUID> blockArea, Player player, String insidePotionType, Integer insideDuration, Integer insideAmplifier){
-        this.insidePotionType = insidePotionType;
+    public void setPotions(boolean potions){ this.potions = potions; }
+
+    public void setInsidePotion(String insidePotion, Integer insideDuration, Integer insideAmplifier){
+        this.insidePotion = insidePotion;
         this.insideDuration = insideDuration;
         this.insideAmplifier = insideAmplifier;
-
-        String playerLocation = player.getLocation().getBlockX() + "." + player.getLocation().getBlockZ();
-
-        if(blockArea.containsKey(playerLocation)){
-            //if potions modifier is on
-            if (potions && insideDuration != null && insideAmplifier != null) {
-                // Add Effects if player is inside plot
-                player.addPotionEffect(new PotionEffect(Objects.requireNonNull(PotionEffectType.getByName(insidePotionType)), insideDuration * 20, insideAmplifier));
-                player.sendMessage(ChatColor.GREEN + insidePotionType + " applied to inside of play area");
-            }
-        }
     }
-    public void setOutsidePotionType(HashMap<String, UUID> blockArea, Player player, String outsidePotionType, Integer insideDuration, Integer insideAmplifier){
-        this.outsidePotionType = outsidePotionType;
-        this.outsideDuration = insideDuration;
-        this.outsideAmplifier = insideAmplifier;
-
-        String playerLocation = player.getLocation().getBlockX() + "." + player.getLocation().getBlockZ();
-
-        if(!blockArea.containsKey(playerLocation)){
-            if(potions && outsideDuration != null && outsideAmplifier != null){
-                //Add Effects if player is outside plot
-                player.addPotionEffect(new PotionEffect(Objects.requireNonNull(PotionEffectType.getByName(outsidePotionType)), outsideDuration * 20, outsideAmplifier));
-                player.sendMessage(ChatColor.GREEN + outsidePotionType + " applied to outside of play area");
-            }
-        }
-    }
-    public boolean isPotionsModOn(){ return potions; }
-
-    public String getInsidePotionType(){
-        return insidePotionType;
+    public void setOutsidePotion(String outsidePotion, Integer outsideDuration, Integer outsideAmplifier){
+        this.outsidePotion = outsidePotion;
+        this.outsideDuration = outsideDuration;
+        this.outsideAmplifier = outsideAmplifier;
     }
 
+    public String getInsidePotion(){
+        return insidePotion;
+    }
     public Integer getInsideDuration(){
         return insideDuration;
     }
@@ -87,8 +57,8 @@ public class PlayAreaPotionSettings {
         return insideAmplifier;
     }
 
-    public String getOutsidePotionType(){
-        return outsidePotionType;
+    public String getOutsidePotion(){
+        return outsidePotion;
     }
 
     public Integer getOutsideDuration(){
@@ -97,20 +67,5 @@ public class PlayAreaPotionSettings {
 
     public Integer getOutsideAmplifier(){
         return outsideAmplifier;
-    }
-    public void clearPotions(Player player){
-        if(insidePotionType != null){
-            player.removePotionEffect(Objects.requireNonNull(PotionEffectType.getByName(insidePotionType)));
-        }
-        if(outsidePotionType != null){
-            player.removePotionEffect(Objects.requireNonNull(PotionEffectType.getByName(outsidePotionType)));
-        }
-
-        insidePotionType = null;
-        insideDuration = null;
-        insideAmplifier = null;
-        outsidePotionType = null;
-        outsideDuration = null;
-        outsideAmplifier = null;
     }
 }

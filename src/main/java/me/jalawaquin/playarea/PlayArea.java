@@ -15,21 +15,20 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PlayArea extends JavaPlugin {
     private Plots plot = new Plots();
-    private PlayAreaPotionSettings potionSettings = new PlayAreaPotionSettings();
-    private PlayAreaMessageSettings messageSettings = new PlayAreaMessageSettings();
+    //put inside plots class
     @Override
     public void onEnable() {
         // Plugin startup logic
         System.out.println("PlayArea Plugin start");
 
-        getCommand("deletePlayArea").setExecutor(new deletePlayArea(plot, potionSettings, messageSettings));
-        getCommand("insidePlayArea").setExecutor(new insidePlayArea(plot, potionSettings, messageSettings));
-        getCommand("outsidePlayArea").setExecutor(new outsidePlayArea(plot, potionSettings, messageSettings));
+        getCommand("deletePlayArea").setExecutor(new deletePlayArea(plot));
+        getCommand("insidePlayArea").setExecutor(new insidePlayArea(plot));
+        getCommand("outsidePlayArea").setExecutor(new outsidePlayArea(plot));
         getCommand("setPlayArea").setExecutor(new setPlayArea());
-        getCommand("turnPlayArea").setExecutor(new turnPlayArea(plot, potionSettings, messageSettings));
+        getCommand("turnPlayArea").setExecutor(new turnPlayArea(plot));
 
         getServer().getPluginManager().registerEvents(new PlayEvents(plot),this);
-        getServer().getPluginManager().registerEvents(new PlotAreaListener(plot, potionSettings, messageSettings), this);
+        getServer().getPluginManager().registerEvents(new PlotAreaListener(plot), this);
     }
 
 }

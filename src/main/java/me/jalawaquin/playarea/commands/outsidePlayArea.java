@@ -1,8 +1,7 @@
 package me.jalawaquin.playarea.commands;
 
 import me.jalawaquin.playarea.settings.Plots;
-import me.jalawaquin.playarea.settings.PlayAreaMessageSettings;
-import me.jalawaquin.playarea.settings.PlayAreaPotionSettings;
+
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -12,13 +11,9 @@ import org.bukkit.entity.Player;
 
 public class outsidePlayArea implements CommandExecutor{
     private Plots plot;
-    private PlayAreaPotionSettings potionSettings;
-    private PlayAreaMessageSettings messageSettings;
 
-    public outsidePlayArea(Plots plot, PlayAreaPotionSettings potionSettings, PlayAreaMessageSettings messageSettings){
+    public outsidePlayArea(Plots plot){
         this.plot = plot;
-        this.potionSettings = potionSettings;
-        this.messageSettings = messageSettings;
     }
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
@@ -43,19 +38,19 @@ public class outsidePlayArea implements CommandExecutor{
 
                 if(args[0].equalsIgnoreCase("potions") && args.length >= 3)
                 {
-                    if(potionSettings.isPotionsModOn()){
+                    if(plot.isPotionsModOn()){
                         String potionType = args[1].toUpperCase();
                         Integer duration = Integer.parseInt(args[2]);
                         Integer amplifier = Integer.parseInt(args[3]);
 
-                        potionSettings.setOutsidePotionType(plot.getBlockArea(), player, potionType, duration, amplifier);
+                        plot.setOutsidePotionType(plot.getBlockArea(), player, potionType, duration, amplifier);
                     }
                     else{
                         player.sendMessage(ChatColor.RED + "Potions modifier is not turned on");
                     }
                 }
                 else if(args[0].equalsIgnoreCase("message")){
-                    messageSettings.setLeaveMessage(args[1]);
+                    //messageSettings.setLeaveMessage(args[1]);
                 }
                 else {
                     player.sendMessage(ChatColor.RED + "Invalid Input. /outsideplayarea potion <effect> <seconds> <amplifier>");
