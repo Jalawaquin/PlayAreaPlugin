@@ -11,11 +11,11 @@ commands:
     description: delete the play area
     aliases: deleteplayarea
   turnPlayArea:
-    description: modify the play area
+    description: turn play area modifications on and off
     aliases: turnplayarea
-  inPlayArea:
+  insidePlayArea:
     description: modify the mob or potion effects when inside play area
-    aliases: inplayarea
-  outPlayArea:
+    aliases: insideplayarea
+  outsidePlayArea:
     description: modify the mob or potion effects when inside play area
-    aliases: outplayarea
+    aliases: outsideplayarea

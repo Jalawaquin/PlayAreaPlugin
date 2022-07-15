@@ -1,8 +1,8 @@
 package me.jalawaquin.playarea;
 
 import me.jalawaquin.playarea.commands.deletePlayArea;
-import me.jalawaquin.playarea.commands.inPlayArea;
-import me.jalawaquin.playarea.commands.outPlayArea;
+import me.jalawaquin.playarea.commands.insidePlayArea;
+import me.jalawaquin.playarea.commands.outsidePlayArea;
 import me.jalawaquin.playarea.commands.turnPlayArea;
 import me.jalawaquin.playarea.commands.setPlayArea;
 
@@ -19,8 +19,8 @@ public final class PlayArea extends JavaPlugin {
         getCommand("setPlayArea").setExecutor(new setPlayArea());
         getCommand("deletePlayArea").setExecutor(new deletePlayArea());
         getCommand("turnPlayArea").setExecutor(new turnPlayArea());
-        getCommand("inPlayArea").setExecutor(new inPlayArea());
-        getCommand("outPlayArea").setExecutor(new outPlayArea());
+        getCommand("insidePlayArea").setExecutor(new insidePlayArea());
+        getCommand("outsidePlayArea").setExecutor(new outsidePlayArea());
 
         getServer().getPluginManager().registerEvents(new PlayEvents(),this);
         getServer().getPluginManager().registerEvents(new PlotAreaListener(), this);

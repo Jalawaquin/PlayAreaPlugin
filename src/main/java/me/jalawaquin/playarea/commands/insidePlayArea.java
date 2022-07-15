@@ -8,7 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class outPlayArea implements CommandExecutor{
+public class insidePlayArea implements CommandExecutor{
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
@@ -18,7 +18,7 @@ public class outPlayArea implements CommandExecutor{
 
         Player player = (Player) sender;
 
-        if (!player.hasPermission("playarea.outplayarea")){
+        if (!player.hasPermission("playarea.insideplayarea")){
             player.sendMessage(ChatColor.RED + "You do not have the required permissions to use this command");
             return false;
         }
@@ -28,7 +28,7 @@ public class outPlayArea implements CommandExecutor{
                 PlotAreaListener listener = new PlotAreaListener();
 
                 if(listener.isPlotEmpty()){
-                    player.sendMessage(ChatColor.RED + "Cannot modify outside of play area. No play area exists");
+                    player.sendMessage(ChatColor.RED + "Cannot modify inside of play area. No play area exists");
                     return false;
                 }
 
@@ -39,24 +39,25 @@ public class outPlayArea implements CommandExecutor{
                         Integer duration = Integer.parseInt(args[2]);
                         Integer amplifier = Integer.parseInt(args[3]);
 
-                        listener.setOutsidePotionType(potionType, duration, amplifier);
+                        listener.setInsidePotionType(player, potionType, duration, amplifier);
                     }
                     else{
                         player.sendMessage(ChatColor.RED + "Potions modifier is not turned on");
                     }
                 }
                 else {
-                    player.sendMessage(ChatColor.RED + "Invalid Input. /outplayarea potion <effect> <seconds> <amplifier>");
+                    player.sendMessage(ChatColor.RED + "Invalid Input. /insideplayarea potion <effect> <seconds> <amplifier>");
                 }
             }
             else{
-                player.sendMessage(ChatColor.RED + "Invalid Input. /outplayarea <type> <mod> ....");
+                player.sendMessage(ChatColor.RED + "Invalid Input. /insideplayarea <modtype> <variable> ....");
             }
         }
         catch(IllegalArgumentException e){
-            player.sendMessage(ChatColor.RED + "Invalid Input. /outplayarea <type> <mod> ....");
+            player.sendMessage(ChatColor.RED + "Invalid Input. /insideplayarea <modtype> <variable> ....");
         }
 
         return true;
     }
+
 }

@@ -30,14 +30,21 @@ public class turnPlayArea implements CommandExecutor{
                     return false;
                 }
 
-                if(args[0].toLowerCase().equals("potions"))
+                if(args[0].equalsIgnoreCase("potions"))
                 {
                     if(listener.playAreaPotions(args[1].toLowerCase(), player)){
-                        player.sendMessage(ChatColor.GREEN + "Potions modifier turned on !");
-                        player.sendMessage(ChatColor.GREEN + "Utilize /inplayarea and /outplayarea to modify potions !");
+                        player.sendMessage(ChatColor.GREEN + "Potions modifier turned on ! Utilize /insideplayarea and /outsideplayarea to modify potions effects !");
                     }
                     else {
                         player.sendMessage(ChatColor.GREEN + "Potions modifier turned off !");
+                    }
+                }
+                else if(args[0].equalsIgnoreCase("mobs")){
+                    if(listener.playAreaMobs(args[1].toLowerCase(), player)){
+                        player.sendMessage(ChatColor.GREEN + "Mobs modifier turned on ! Utilize /insideplayarea and /outsideplayarea to modify mob effects !");
+                    }
+                    else {
+                        player.sendMessage(ChatColor.GREEN + "Mob modifier turned off !");
                     }
                 }
                 else {
