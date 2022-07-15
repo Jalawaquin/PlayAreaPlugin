@@ -1,6 +1,8 @@
 package me.jalawaquin.playarea.commands;
 
-import me.jalawaquin.playarea.listeners.PlotAreaListener;
+import me.jalawaquin.playarea.settings.Plots;
+import me.jalawaquin.playarea.settings.PlayAreaMessageSettings;
+import me.jalawaquin.playarea.settings.PlayAreaPotionSettings;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -9,7 +11,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class outsidePlayArea implements CommandExecutor{
+    private Plots plot;
+    private PlayAreaPotionSettings potionSettings;
+    private PlayAreaMessageSettings messageSettings;
 
+    public outsidePlayArea(Plots plot, PlayAreaPotionSettings potionSettings, PlayAreaMessageSettings messageSettings){
+        this.plot = plot;
+        this.potionSettings = potionSettings;
+        this.messageSettings = messageSettings;
+    }
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
         if (!(sender instanceof Player)){
@@ -25,25 +35,27 @@ public class outsidePlayArea implements CommandExecutor{
 
         try{
             if(args.length >= 2){
-                PlotAreaListener listener = new PlotAreaListener();
 
-                if(listener.isPlotEmpty()){
+                if(plot.isPlotEmpty()){
                     player.sendMessage(ChatColor.RED + "Cannot modify outside of play area. No play area exists");
                     return false;
                 }
 
                 if(args[0].equalsIgnoreCase("potions") && args.length >= 3)
                 {
-                    if(listener.isPotionsModOn()){
+                    if(potionSettings.isPotionsModOn()){
                         String potionType = args[1].toUpperCase();
                         Integer duration = Integer.parseInt(args[2]);
                         Integer amplifier = Integer.parseInt(args[3]);
 
-                        listener.setOutsidePotionType(player, potionType, duration, amplifier);
+                        potionSettings.setOutsidePotionType(plot.getBlockArea(), player, potionType, duration, amplifier);
                     }
                     else{
                         player.sendMessage(ChatColor.RED + "Potions modifier is not turned on");
                     }
+                }
+                else if(args[0].equalsIgnoreCase("message")){
+                    messageSettings.setLeaveMessage(args[1]);
                 }
                 else {
                     player.sendMessage(ChatColor.RED + "Invalid Input. /outsideplayarea potion <effect> <seconds> <amplifier>");

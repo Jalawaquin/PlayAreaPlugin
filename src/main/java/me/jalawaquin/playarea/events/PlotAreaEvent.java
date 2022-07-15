@@ -11,6 +11,7 @@ import java.util.UUID;
 
 
 public class PlotAreaEvent extends Event {
+    //NOTE: Look up whatever the handlers list does
     private static final HandlerList handlers = new HandlerList();
     private Player player;
     private Location loc1,loc2;

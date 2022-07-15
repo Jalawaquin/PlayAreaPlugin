@@ -1,6 +1,6 @@
 package me.jalawaquin.playarea.events;
 
-import me.jalawaquin.playarea.listeners.PlotAreaListener;
+import me.jalawaquin.playarea.settings.Plots;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -8,17 +8,19 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-
 import static org.bukkit.Bukkit.getServer;
 
+import java.util.ArrayList;
+
 public class PlayEvents implements Listener {
-    private static Location[] block_locations = new Location[2];
-    private static int num_of_locations = 0;
+    private Plots plot;
+    public PlayEvents(Plots plot){
+        this.plot = plot;
+    }
 
     @EventHandler
     public void onHoeHit(PlayerInteractEvent event){
@@ -31,17 +33,17 @@ public class PlayEvents implements Listener {
                 if (player.hasPermission("playarea.playevents")) {
                     Location block_loc = block.getLocation();
 
-                    if (num_of_locations < 2){
-                        block_locations[num_of_locations] = block_loc;
+                    if (plot.getNumOfLocations() < 2){
+                        plot.addBlockLocation(block_loc);
 
-                        player.sendMessage("Location " + num_of_locations + ": " + "X: " + block_locations[num_of_locations].getBlockX()
-                                + ", Z: " + block_locations[num_of_locations].getBlockZ());
+                        player.sendMessage("Location " + plot.getNumOfLocations());
 
-                        if (num_of_locations == 1){
-                            getServer().getPluginManager().callEvent(new PlotAreaEvent(player, block_locations[0], block_locations[1]));
-                            num_of_locations++;
+                        if (plot.getNumOfLocations() == 1){
+                            ArrayList<Location> block_locations = plot.getBlockLocations();
+                            getServer().getPluginManager().callEvent(new PlotAreaEvent(player, block_locations.get(0), block_locations.get(1)));
+                            plot.incNumOfLocations();
                         }
-                        num_of_locations++;
+                        plot.incNumOfLocations();
                     }
                 }
                 else {
@@ -49,16 +51,5 @@ public class PlayEvents implements Listener {
                 }
             }
         }
-    }
-
-    public void delete_locations(Player player){
-        PlotAreaListener listener = new PlotAreaListener();
-        listener.deletePlot();
-        listener.turnModifiersOff(player);
-        for (int i = 0; i < 2; i++){
-            block_locations[i] = null;
-        }
-        num_of_locations = 0;
-        player.sendMessage(ChatColor.GREEN + "Play area deleted");
     }
 }

@@ -8,22 +8,28 @@ import me.jalawaquin.playarea.commands.setPlayArea;
 
 import me.jalawaquin.playarea.events.PlayEvents;
 import me.jalawaquin.playarea.listeners.PlotAreaListener;
+import me.jalawaquin.playarea.settings.PlayAreaMessageSettings;
+import me.jalawaquin.playarea.settings.PlayAreaPotionSettings;
+import me.jalawaquin.playarea.settings.Plots;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PlayArea extends JavaPlugin {
-
+    private Plots plot = new Plots();
+    private PlayAreaPotionSettings potionSettings = new PlayAreaPotionSettings();
+    private PlayAreaMessageSettings messageSettings = new PlayAreaMessageSettings();
     @Override
     public void onEnable() {
         // Plugin startup logic
         System.out.println("PlayArea Plugin start");
-        getCommand("setPlayArea").setExecutor(new setPlayArea());
-        getCommand("deletePlayArea").setExecutor(new deletePlayArea());
-        getCommand("turnPlayArea").setExecutor(new turnPlayArea());
-        getCommand("insidePlayArea").setExecutor(new insidePlayArea());
-        getCommand("outsidePlayArea").setExecutor(new outsidePlayArea());
 
-        getServer().getPluginManager().registerEvents(new PlayEvents(),this);
-        getServer().getPluginManager().registerEvents(new PlotAreaListener(), this);
+        getCommand("deletePlayArea").setExecutor(new deletePlayArea(plot, potionSettings, messageSettings));
+        getCommand("insidePlayArea").setExecutor(new insidePlayArea(plot, potionSettings, messageSettings));
+        getCommand("outsidePlayArea").setExecutor(new outsidePlayArea(plot, potionSettings, messageSettings));
+        getCommand("setPlayArea").setExecutor(new setPlayArea());
+        getCommand("turnPlayArea").setExecutor(new turnPlayArea(plot, potionSettings, messageSettings));
+
+        getServer().getPluginManager().registerEvents(new PlayEvents(plot),this);
+        getServer().getPluginManager().registerEvents(new PlotAreaListener(plot, potionSettings, messageSettings), this);
     }
 
 }
