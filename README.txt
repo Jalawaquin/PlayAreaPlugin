@@ -4,5 +4,3 @@ If a player wanders out of this square, a customizable message will be sent, as 
 
 potions list
 https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html
-
-
