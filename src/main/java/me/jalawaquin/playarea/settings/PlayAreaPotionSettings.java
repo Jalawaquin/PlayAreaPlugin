@@ -4,22 +4,22 @@ public class PlayAreaPotionSettings {
     // are potions or mobs being modified?
     private boolean potions;
     private String insidePotion;
-    private Integer insideDuration;
-    private Integer insideAmplifier;
+    private int insideDuration;
+    private int insideAmplifier;
 
     //outside status effects are universal
-    private static String outsidePotion;
-    private static Integer outsideDuration;
-    private static Integer outsideAmplifier;
+    private String outsidePotion;
+    private Integer outsideDuration;
+    private Integer outsideAmplifier;
 
     public PlayAreaPotionSettings(){
         this.potions = false;
         this.insidePotion = null;
-        this.insideDuration = null;
-        this.insideAmplifier = null;
+        this.insideDuration = 0;
+        this.insideAmplifier = 0;
         this.outsidePotion = null;
-        this.outsideDuration = null;
-        this.outsideAmplifier = null;
+        this.outsideDuration = 0;
+        this.outsideAmplifier = 0;
     }
     public boolean getPotions(){
         return this.potions;

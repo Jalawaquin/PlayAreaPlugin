@@ -32,7 +32,7 @@ public class Plots {
     // mob damage settings
     public PlayAreaMobSettings getMobSettings(){return this.mobSettings;}
     public boolean isMobModOn(){return mobSettings.getMobs();}
-    public boolean playAreaMobs(String bool, Player player){
+    public boolean playAreaMobs(String bool){
         switch(bool){
             case "on":
                 mobSettings.setMobs(true);
@@ -43,7 +43,7 @@ public class Plots {
         }
         return mobSettings.getMobs();
     }
-    public void setMobSettings(Float mobModifier, boolean inside, Player player){
+    public void setMobSettings(Double mobModifier, boolean inside, Player player){
         if(inside){
             mobSettings.setInsideMobModifier(mobModifier);
             player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Mob damage modifier set to " + mobModifier + " inside the play area"));
@@ -56,7 +56,7 @@ public class Plots {
     // message settings
     public PlayAreaMessageSettings getMessageSettings(){ return this.messageSettings; }
     public boolean isMessageModOn(){return messageSettings.getMessage();}
-    public boolean playAreaMessage(String bool, Player player){
+    public boolean playAreaMessage(String bool){
         switch(bool){
             case "on":
                 messageSettings.setMessage(true);
@@ -93,7 +93,7 @@ public class Plots {
             player.removePotionEffect(Objects.requireNonNull(PotionEffectType.getByName(outsidePotion)));
         }
 
-        this.potionSettings = new PlayAreaPotionSettings();
+        potionSettings = new PlayAreaPotionSettings();
     }
 
     public boolean isPotionsModOn(){
@@ -115,6 +115,7 @@ public class Plots {
             player.removePotionEffect(Objects.requireNonNull(PotionEffectType.getByName(potionSettings.getInsidePotion())));
         }
 
+        //check if inside potion is valid
         potionSettings.setInsidePotion(insidePotion, insideDuration, insideAmplifier);
 
         String playerLocation = player.getLocation().getBlockX() + "." + player.getLocation().getBlockZ();
@@ -122,7 +123,7 @@ public class Plots {
 
         if(blockArea.containsKey(playerLocation)){
             //if potions modifier is on
-            if (isPotionsModOn() && insideDuration != null && insideAmplifier != null) {
+            if (insideDuration != null && insideAmplifier != null) {
                 // Add Effects if player is inside plot
                 player.addPotionEffect(new PotionEffect(Objects.requireNonNull(PotionEffectType.getByName(potionSettings.getInsidePotion())),
                         potionSettings.getInsideDuration() * 20, potionSettings.getInsideAmplifier()));
@@ -140,7 +141,7 @@ public class Plots {
         String playerLocation = player.getLocation().getBlockX() + "." + player.getLocation().getBlockZ();
 
         if(!blockArea.containsKey(playerLocation)){
-            if(isPotionsModOn() && outsideDuration != null && outsideAmplifier != null){
+            if(outsideDuration != null && outsideAmplifier != null){
                 //Add Effects if player is outside plot
                 player.addPotionEffect(new PotionEffect(Objects.requireNonNull(PotionEffectType.getByName(potionSettings.getOutsidePotion())),
                         potionSettings.getOutsideDuration() * 20, potionSettings.getOutsideAmplifier()));
@@ -152,10 +153,12 @@ public class Plots {
     // Hash Map / Plot functions
     public boolean isPlotEmpty(){return blockArea.isEmpty();}
     public void deletePlot(Player player){
+        //see if you can better free memory here
         blockArea.clear();
         block_locations.clear();
         num_of_locations = 0;
         messageSettings = new PlayAreaMessageSettings();
+        mobSettings = new PlayAreaMobSettings();
         clearPotions(player);
         player.sendMessage(ChatColor.GREEN + "Play area deleted");
     }

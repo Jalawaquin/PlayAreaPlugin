@@ -57,7 +57,7 @@ public class outsidePlayArea implements CommandExecutor{
                         break;
                     case "messages":
                         if(plot.isMessageModOn()){
-                            String tmp_message = new String();
+                            String tmp_message = "";
 
                             for(int i = 1; i < args.length; i++) {
                                 if(i == 1){
@@ -74,7 +74,7 @@ public class outsidePlayArea implements CommandExecutor{
                         break;
                     case "mobs":
                         if(plot.isMobModOn()){
-                            plot.setMobSettings(Float.parseFloat(args[1]), false, player);
+                            plot.setMobSettings(Double.parseDouble(args[1]), false, player);
                         }
                         else{
                             player.sendMessage(ChatColor.RED + "Mob modifier is not turned on");

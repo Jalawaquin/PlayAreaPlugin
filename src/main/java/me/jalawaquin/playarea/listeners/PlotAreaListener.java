@@ -1,12 +1,13 @@
 package me.jalawaquin.playarea.listeners;
 
-import me.jalawaquin.playarea.PlayArea;
 import me.jalawaquin.playarea.settings.PlayAreaMessageSettings;
+import me.jalawaquin.playarea.settings.PlayAreaMobSettings;
 import me.jalawaquin.playarea.settings.PlayAreaPotionSettings;
 import me.jalawaquin.playarea.settings.Plots;
 import me.jalawaquin.playarea.events.PlotAreaEvent;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,7 +21,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class PlotAreaListener implements Listener {
-
     private Plots plot;
 
     public PlotAreaListener(Plots plot){
@@ -35,7 +35,36 @@ public class PlotAreaListener implements Listener {
     }
 
     @EventHandler
-    public void onHit(EntityDamageByEntityEvent event){
+    public void onDamageEvent(EntityDamageByEntityEvent event){
+        if(!(event.getDamager() instanceof Monster)) {
+            return;
+        }
+
+        if (!plot.isMobModOn()){
+            return;
+        }
+
+        if(!(event.getEntity() instanceof Player)){
+            return;
+        }
+
+        HashMap<String, UUID> blockArea = plot.getBlockArea();
+        PlayAreaMobSettings temp_mobSettings = plot.getMobSettings();
+        String playerLocation = event.getEntity().getLocation().getBlockX() + "." + event.getEntity().getLocation().getBlockZ();
+        double damageInc;
+
+        // if player is damaged and mob modifier is on multiply damage by the modifier value
+        if(blockArea.containsKey(playerLocation)){
+            damageInc =  event.getDamage() + temp_mobSettings.getInsideMobModifier();
+            event.setDamage(damageInc);
+            event.getEntity().sendMessage("Damage Increased by " + damageInc);
+
+        }
+        else if(!blockArea.containsKey(playerLocation)){
+            damageInc =  event.getDamage() + temp_mobSettings.getOutsideMobModifier();
+            event.getEntity().sendMessage("Damage Increased by " + damageInc);
+            event.setDamage(damageInc);
+        }
 
     }
 

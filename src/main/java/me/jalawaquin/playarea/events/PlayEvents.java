@@ -40,7 +40,7 @@ public class PlayEvents implements Listener {
                                 + " Z: " + block_locations.get(plot.getNumOfLocations()).getBlockZ());
 
                         if (plot.getNumOfLocations() == 1){
-
+                            // calls Plotareaevent so plotarealistner may recieve plot
                             getServer().getPluginManager().callEvent(new PlotAreaEvent(player, block_locations.get(0), block_locations.get(1)));
                             plot.incNumOfLocations();
                         }
