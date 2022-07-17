@@ -46,11 +46,11 @@ public class Plots {
     public void setMobSettings(Double mobModifier, boolean inside, Player player){
         if(inside){
             mobSettings.setInsideMobModifier(mobModifier);
-            player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Mob damage modifier set to " + mobModifier + " inside the play area"));
+            player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Mob damage increased by " + mobModifier + " inside the play area"));
         }
         else{
             mobSettings.setOutsideMobModifier(mobModifier);
-            player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Mob damage modifier set to " + mobModifier + " outside the play area"));
+            player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Mob damage increased by" + mobModifier + " outside the play area"));
         }
     }
     // message settings

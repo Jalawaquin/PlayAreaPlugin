@@ -11,9 +11,7 @@ import org.bukkit.entity.Player;
 public class outsidePlayArea implements CommandExecutor{
     private Plots plot;
 
-    public outsidePlayArea(Plots plot){
-        this.plot = plot;
-    }
+    public outsidePlayArea(Plots plot){this.plot = plot;}
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
         if (!(sender instanceof Player)){

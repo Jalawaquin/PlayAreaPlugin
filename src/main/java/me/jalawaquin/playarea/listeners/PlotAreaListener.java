@@ -65,7 +65,6 @@ public class PlotAreaListener implements Listener {
             event.getEntity().sendMessage("Damage Increased by " + damageInc);
             event.setDamage(damageInc);
         }
-
     }
 
     // NOTE: see how many times this function is called
