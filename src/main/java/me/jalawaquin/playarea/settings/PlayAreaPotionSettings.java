@@ -7,9 +7,10 @@ public class PlayAreaPotionSettings {
     private Integer insideDuration;
     private Integer insideAmplifier;
 
-    private String outsidePotion;
-    private Integer outsideDuration;
-    private Integer outsideAmplifier;
+    //outside status effects are universal
+    private static String outsidePotion;
+    private static Integer outsideDuration;
+    private static Integer outsideAmplifier;
 
     public PlayAreaPotionSettings(){
         this.potions = false;

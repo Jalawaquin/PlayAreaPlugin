@@ -1,8 +1,6 @@
 package me.jalawaquin.playarea.commands;
 
-import me.jalawaquin.playarea.settings.PlayAreaMessageSettings;
 import me.jalawaquin.playarea.settings.Plots;
-
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -36,39 +34,54 @@ public class outsidePlayArea implements CommandExecutor{
                     return false;
                 }
 
-                if(args[0].equalsIgnoreCase("potions") && args.length >= 3)
-                {
-                    if(plot.isPotionsModOn()){
-                        String potionType = args[1].toUpperCase();
-                        Integer duration = Integer.parseInt(args[2]);
-                        Integer amplifier = Integer.parseInt(args[3]);
+                //turn into switch statement
+                String arg_zero = args[0].toLowerCase();
 
-                        plot.setOutsidePotionType(plot.getBlockArea(), player, potionType, duration, amplifier);
-                    }
-                    else{
-                        player.sendMessage(ChatColor.RED + "Potions modifier is not turned on");
-                    }
-                }
-                else if(args[0].equalsIgnoreCase("messages")){
-                    if(plot.isMessageModOn()){
-                        String tmp_message = new String();
+                switch(arg_zero){
+                    case "potions":
+                        if(args.length >= 3){
+                            if(plot.isPotionsModOn()){
+                                String potionType = args[1].toUpperCase();
+                                Integer duration = Integer.parseInt(args[2]);
+                                Integer amplifier = Integer.parseInt(args[3]);
 
-                        for(int i = 1; i < args.length; i++) {
-                            if(i == 1){
-                                tmp_message = tmp_message + args[i];
-                                continue;
+                                plot.setOutsidePotionType(plot.getBlockArea(), player, potionType, duration, amplifier);
                             }
-                            tmp_message = tmp_message + " " + args[i];
+                            else{
+                                player.sendMessage(ChatColor.RED + "Potions modifier is not turned on");
+                            }
                         }
-                        plot.setMessageSettings(tmp_message, false);
-                        player.sendMessage(ChatColor.GREEN + "Leave message successfully set ! ");
-                    }
-                    else{
-                        player.sendMessage(ChatColor.RED + "Message modifier is not turned on");
-                    }
-                }
-                else{
-                    player.sendMessage(ChatColor.RED + "Invalid Input. /outsideplayarea <modtype> <variable> ....");
+                        else{
+                            player.sendMessage(ChatColor.RED + "Invalid Input. /outsideplayarea <modtype> <variable> ....");
+                        }
+                        break;
+                    case "messages":
+                        if(plot.isMessageModOn()){
+                            String tmp_message = new String();
+
+                            for(int i = 1; i < args.length; i++) {
+                                if(i == 1){
+                                    tmp_message = tmp_message + args[i];
+                                    continue;
+                                }
+                                tmp_message = tmp_message + " " + args[i];
+                            }
+                            plot.setMessageSettings(tmp_message, false, player);
+                        }
+                        else{
+                            player.sendMessage(ChatColor.RED + "Message modifier is not turned on");
+                        }
+                        break;
+                    case "mobs":
+                        if(plot.isMobModOn()){
+                            plot.setMobSettings(Float.parseFloat(args[1]), false, player);
+                        }
+                        else{
+                            player.sendMessage(ChatColor.RED + "Mob modifier is not turned on");
+                        }
+                        break;
+                    default:
+                        player.sendMessage(ChatColor.RED + "Invalid Input. /outsideplayarea <modtype> <variable> ....");
                 }
             }
             else{

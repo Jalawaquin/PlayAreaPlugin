@@ -18,6 +18,7 @@ public class Plots {
     //play area settings
     private PlayAreaPotionSettings potionSettings;
     private PlayAreaMessageSettings messageSettings;
+    private PlayAreaMobSettings mobSettings;
 
     public Plots(){
         this.blockArea = new HashMap<>();
@@ -25,19 +26,62 @@ public class Plots {
         this.num_of_locations = 0;
         this.potionSettings = new PlayAreaPotionSettings();
         this.messageSettings = new PlayAreaMessageSettings();
+        this.mobSettings = new PlayAreaMobSettings();
     }
-    //message settings
-    public PlayAreaMessageSettings getMessageSettings(){ return this.messageSettings; }
 
-    public void setMessageSettings(String message, boolean inside){
+    // mob damage settings
+    public PlayAreaMobSettings getMobSettings(){return this.mobSettings;}
+    public boolean isMobModOn(){return mobSettings.getMobs();}
+    public boolean playAreaMobs(String bool, Player player){
+        switch(bool){
+            case "on":
+                mobSettings.setMobs(true);
+                break;
+            case "off":
+                mobSettings = new PlayAreaMobSettings();
+                break;
+        }
+        return mobSettings.getMobs();
+    }
+    public void setMobSettings(Float mobModifier, boolean inside, Player player){
+        if(inside){
+            mobSettings.setInsideMobModifier(mobModifier);
+            player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Mob damage modifier set to " + mobModifier + " inside the play area"));
+        }
+        else{
+            mobSettings.setOutsideMobModifier(mobModifier);
+            player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Mob damage modifier set to " + mobModifier + " outside the play area"));
+        }
+    }
+    // message settings
+    public PlayAreaMessageSettings getMessageSettings(){ return this.messageSettings; }
+    public boolean isMessageModOn(){return messageSettings.getMessage();}
+    public boolean playAreaMessage(String bool, Player player){
+        switch(bool){
+            case "on":
+                messageSettings.setMessage(true);
+                break;
+            case "off":
+                messageSettings.setMessage(false);
+                break;
+        }
+
+        return messageSettings.getMessage();
+    }
+    public void setMessageSettings(String message, boolean inside, Player player){
         if(inside){
             messageSettings.setEnterMessage(message);
+            player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Enter message successfully set !"));
         }
         else{
             messageSettings.setLeaveMessage(message);
+            player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Leave message successfully set !"));
         }
     }
     // potion functions
+    public PlayAreaPotionSettings getPotionSettings(){
+        return this.potionSettings;
+    }
     public void clearPotions(Player player){
         String insidePotion = potionSettings.getInsidePotion();
         String outsidePotion = potionSettings.getOutsidePotion();
@@ -55,35 +99,16 @@ public class Plots {
     public boolean isPotionsModOn(){
         return potionSettings.getPotions();
     }
-    public boolean isMessageModOn(){
-        return messageSettings.getMessage();
-    }
     public boolean playAreaPotions(String bool, Player player){
         switch(bool){
             case "on":
                 potionSettings.setPotions(true);
                 break;
             case "off":
-                potionSettings.setPotions(false);
                 clearPotions(player);
                 break;
         }
         return potionSettings.getPotions();
-    }
-    public boolean playAreaMessage(String bool, Player player){
-        switch(bool){
-            case "on":
-                messageSettings.setMessage(true);
-                break;
-            case "off":
-                messageSettings.setMessage(false);
-                messageSettings = new PlayAreaMessageSettings();
-                break;
-        }
-        return messageSettings.getMessage();
-    }
-    public PlayAreaPotionSettings getPotionSettings(){
-        return this.potionSettings;
     }
     public void setInsidePotionType(HashMap<String, UUID> blockArea, Player player, String insidePotion, Integer insideDuration, Integer insideAmplifier){
         if(potionSettings.getInsidePotion() != null){
@@ -101,9 +126,9 @@ public class Plots {
                 // Add Effects if player is inside plot
                 player.addPotionEffect(new PotionEffect(Objects.requireNonNull(PotionEffectType.getByName(potionSettings.getInsidePotion())),
                         potionSettings.getInsideDuration() * 20, potionSettings.getInsideAmplifier()));
-                player.sendMessage(ChatColor.GREEN + insidePotion + " applied to inside of play area");
             }
         }
+        player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + insidePotion + " applied to inside of play area"));
     }
     public void setOutsidePotionType(HashMap<String, UUID> blockArea, Player player, String outsidePotion, Integer outsideDuration, Integer outsideAmplifier){
         if(potionSettings.getOutsidePotion() != null){
@@ -119,12 +144,12 @@ public class Plots {
                 //Add Effects if player is outside plot
                 player.addPotionEffect(new PotionEffect(Objects.requireNonNull(PotionEffectType.getByName(potionSettings.getOutsidePotion())),
                         potionSettings.getOutsideDuration() * 20, potionSettings.getOutsideAmplifier()));
-                player.sendMessage(ChatColor.GREEN + outsidePotion + " applied to outside of play area");
             }
         }
+        player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + outsidePotion + " applied to outside of play area"));
     }
 
-    // Hash Map functions
+    // Hash Map / Plot functions
     public boolean isPlotEmpty(){return blockArea.isEmpty();}
     public void deletePlot(Player player){
         blockArea.clear();

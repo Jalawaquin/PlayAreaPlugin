@@ -35,11 +35,12 @@ public class PlayEvents implements Listener {
 
                     if (plot.getNumOfLocations() < 2){
                         plot.addBlockLocation(block_loc);
-
-                        player.sendMessage("Location " + plot.getNumOfLocations());
+                        ArrayList<Location> block_locations = plot.getBlockLocations();
+                        player.sendMessage("Location " + plot.getNumOfLocations() + " - X: " + block_locations.get(plot.getNumOfLocations()).getBlockX()
+                                + " Z: " + block_locations.get(plot.getNumOfLocations()).getBlockZ());
 
                         if (plot.getNumOfLocations() == 1){
-                            ArrayList<Location> block_locations = plot.getBlockLocations();
+
                             getServer().getPluginManager().callEvent(new PlotAreaEvent(player, block_locations.get(0), block_locations.get(1)));
                             plot.incNumOfLocations();
                         }

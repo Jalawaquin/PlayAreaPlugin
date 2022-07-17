@@ -34,25 +34,35 @@ public class turnPlayArea implements CommandExecutor{
                     return false;
                 }
 
-                if(args[0].equalsIgnoreCase("potions"))
-                {
-                    if(plot.playAreaPotions(args[1].toLowerCase(), player)){
-                        player.sendMessage(ChatColor.GREEN + "Potions modifier turned on ! Utilize /insideplayarea and /outsideplayarea to modify potions effects !");
-                    }
-                    else {
-                        player.sendMessage(ChatColor.GREEN + "Potions modifier turned off !");
-                    }
-                }
-                else if(args[0].equalsIgnoreCase("message")){
-                    if(plot.playAreaMessage(args[1].toLowerCase(), player)){
-                        player.sendMessage(ChatColor.GREEN + "Message modifier turned on ! Utilize /insideplayarea and /outsideplayarea to modify enter and leaving messages !");
-                    }
-                    else {
-                        player.sendMessage(ChatColor.GREEN + "Message modifier turned off !");
-                    }
-                }
-                else {
-                    invalidInput(player);
+                String arg_zero = args[0].toLowerCase();
+
+                switch(arg_zero){
+                    case "potions":
+                        if(plot.playAreaPotions(args[1].toLowerCase(), player)){
+                            player.sendMessage(ChatColor.GREEN + "Potions modifier turned on ! Utilize /insideplayarea and /outsideplayarea to modify potions effects !");
+                        }
+                        else {
+                            player.sendMessage(ChatColor.GREEN + "Potions modifier turned off !");
+                        }
+                        break;
+                    case "messages":
+                        if(plot.playAreaMessage(args[1].toLowerCase(), player)){
+                            player.sendMessage(ChatColor.GREEN + "Message modifier turned on ! Utilize /insideplayarea and /outsideplayarea to modify enter and leaving messages !");
+                        }
+                        else {
+                            player.sendMessage(ChatColor.GREEN + "Message modifier turned off !");
+                        }
+                        break;
+                    case "mobs":
+                        if(plot.playAreaMobs(args[1].toLowerCase(), player)){
+                            player.sendMessage(ChatColor.GREEN + "Mob modifier turned on ! Utilize /insideplayarea and /outsideplayarea to modify mob damage !");
+                        }
+                        else{
+                            player.sendMessage(ChatColor.GREEN + "Mob modifier turned off !");
+                        }
+                        break;
+                    default:
+                        invalidInput(player);
                 }
             }
             else{
@@ -68,6 +78,6 @@ public class turnPlayArea implements CommandExecutor{
     }
 
     private void invalidInput(Player player){
-        player.sendMessage(ChatColor.RED + "Invalid Input. /modplayarea <type> <on/off>");
+        player.sendMessage(ChatColor.RED + "Invalid Input. /turnplayarea <type> <on/off>");
     }
 }

@@ -8,12 +8,11 @@ import me.jalawaquin.playarea.commands.setPlayArea;
 
 import me.jalawaquin.playarea.events.PlayEvents;
 import me.jalawaquin.playarea.listeners.PlotAreaListener;
-import me.jalawaquin.playarea.settings.PlayAreaMessageSettings;
-import me.jalawaquin.playarea.settings.PlayAreaPotionSettings;
 import me.jalawaquin.playarea.settings.Plots;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PlayArea extends JavaPlugin {
+    //turn into ArrayList to have multiple plots ? (if I do this need add plot and remove plot functionality etc.)
     private Plots plot = new Plots();
     //put inside plots class
     @Override

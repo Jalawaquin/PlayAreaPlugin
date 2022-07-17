@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -34,6 +35,12 @@ public class PlotAreaListener implements Listener {
     }
 
     @EventHandler
+    public void onHit(EntityDamageByEntityEvent event){
+
+    }
+
+    // NOTE: see how many times this function is called
+    @EventHandler
     public void onPlayerMove(PlayerMoveEvent event){
         Player player = event.getPlayer();
 
@@ -50,7 +57,6 @@ public class PlotAreaListener implements Listener {
         String outsidePotionType = tempPotionSettings.getOutsidePotion();
         Integer outsideDuration = tempPotionSettings.getOutsideDuration();
         Integer outsideAmplifier = tempPotionSettings.getOutsideAmplifier();
-
 
         // When playarea is set check if player is inside or outside of playarea and outside effects
         // blocks
@@ -69,7 +75,10 @@ public class PlotAreaListener implements Listener {
                 // Add Effects if player is inside plot
                 player.addPotionEffect(new PotionEffect(Objects.requireNonNull(PotionEffectType.getByName(insidePotionType)), insideDuration * 20, insideAmplifier));
             }
-            player.sendMessage(ChatColor.YELLOW + tempMessageSettings.getEnterMessage());
+            //if messages mod on
+            if(plot.isMessageModOn()){
+                player.sendMessage(ChatColor.YELLOW + (ChatColor.ITALIC + tempMessageSettings.getEnterMessage()));
+            }
         }
         else if (!blockArea.containsKey(currentBlockTo) && blockArea.containsKey(currentBlockFrom)){
             // Remove inside potion effects if outsidePotionEffect not null
@@ -83,12 +92,9 @@ public class PlotAreaListener implements Listener {
                 player.addPotionEffect(new PotionEffect(Objects.requireNonNull(PotionEffectType.getByName(outsidePotionType)), outsideDuration * 20, outsideAmplifier));
             }
 
-            player.sendMessage(ChatColor.RED + tempMessageSettings.getLeaveMessage());
+            if(plot.isMessageModOn()){
+                player.sendMessage(ChatColor.RED + (ChatColor.ITALIC + tempMessageSettings.getLeaveMessage()));
+            }
         }
     }
-
-    // POTION MODIFIER FUNCTIONS
-    //NOTE: Think about if there is a better way to implement these functions, so that not all functions are crammed into plotarealistener
-    // (most likely done by removing static variables and using proper object orientation)
-    // clear potion modifiers
 }

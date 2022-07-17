@@ -33,32 +33,54 @@ public class insidePlayArea implements CommandExecutor{
                     player.sendMessage(ChatColor.RED + "Cannot modify inside of play area. No play area exists");
                     return false;
                 }
+                //turn into switch statement
+                String arg_zero = args[0].toLowerCase();
 
-                if(args[0].equalsIgnoreCase("potions") && args.length >= 3)
-                {
-                    if(plot.isPotionsModOn()){
-                        String potionType = args[1].toUpperCase();
-                        Integer duration = Integer.parseInt(args[2]);
-                        Integer amplifier = Integer.parseInt(args[3]);
+                switch(arg_zero){
+                    case "potions":
+                        if(args.length >= 3){
+                            if(plot.isPotionsModOn()){
+                                String potionType = args[1].toUpperCase();
+                                Integer duration = Integer.parseInt(args[2]);
+                                Integer amplifier = Integer.parseInt(args[3]);
 
-                        plot.setInsidePotionType(plot.getBlockArea(), player, potionType, duration, amplifier);
-                    }
-                    else{
-                        player.sendMessage(ChatColor.RED + "Potions modifier is not turned on");
-                    }
-                }
-                else if(args[0].equalsIgnoreCase("messages")){
-                    String tmp_message = new String();
-
-                    for(int i = 1; i < args.length; i++) {
-                        if(i == 1){
-                            tmp_message = tmp_message + args[i];
-                            continue;
+                                plot.setInsidePotionType(plot.getBlockArea(), player, potionType, duration, amplifier);
+                            }
+                            else{
+                                player.sendMessage(ChatColor.RED + "Potions modifier is not turned on");
+                            }
                         }
-                        tmp_message = tmp_message + " " + args[i];
-                    }
-                    plot.setMessageSettings(tmp_message, true);
-                    player.sendMessage(ChatColor.GREEN + "Enter message successfully set ! ");
+                        else{
+                            player.sendMessage(ChatColor.RED + "Invalid Input. /insideplayarea <potions> <duration> <amplifier>");
+                        }
+                        break;
+                    case "messages":
+                        if(plot.isMessageModOn()){
+                            String tmp_message = new String();
+
+                            for(int i = 1; i < args.length; i++) {
+                                if(i == 1){
+                                    tmp_message = tmp_message + args[i];
+                                    continue;
+                                }
+                                tmp_message = tmp_message + " " + args[i];
+                            }
+                            plot.setMessageSettings(tmp_message, true, player);
+                        }
+                        else{
+                            player.sendMessage(ChatColor.RED + "Message modifier is not turned on");
+                        }
+                        break;
+                    case "mobs":
+                        if(plot.isMobModOn()){
+                            plot.setMobSettings(Float.parseFloat(args[1]), true, player);
+                        }
+                        else{
+                            player.sendMessage(ChatColor.RED + "Mob modifier is not turned on");
+                        }
+                        break;
+                    default:
+                        player.sendMessage(ChatColor.RED + "Invalid Input. /insideplayarea <modtype> <variable> ....");
                 }
             }
             else{
