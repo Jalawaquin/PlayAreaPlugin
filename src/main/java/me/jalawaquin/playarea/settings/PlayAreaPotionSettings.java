@@ -2,15 +2,15 @@ package me.jalawaquin.playarea.settings;
 
 public class PlayAreaPotionSettings {
     // are potions or mobs being modified?
-    private boolean potions;
+    private static boolean potions;
     private String insidePotion;
     private int insideDuration;
     private int insideAmplifier;
 
     //outside status effects are universal
-    private String outsidePotion;
-    private Integer outsideDuration;
-    private Integer outsideAmplifier;
+    private static String outsidePotion;
+    private static Integer outsideDuration;
+    private static Integer outsideAmplifier;
 
     public PlayAreaPotionSettings(){
         this.potions = false;
@@ -21,7 +21,7 @@ public class PlayAreaPotionSettings {
         this.outsideDuration = 0;
         this.outsideAmplifier = 0;
     }
-    public boolean getPotions(){
+    public boolean isPotionsModOn(){
         return this.potions;
     }
 

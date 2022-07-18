@@ -1,5 +1,6 @@
 package me.jalawaquin.playarea.commands;
 
+import me.jalawaquin.playarea.PlayArea;
 import me.jalawaquin.playarea.settings.Plots;
 
 import org.bukkit.ChatColor;
@@ -9,10 +10,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class insidePlayArea implements CommandExecutor{
-    private Plots plot;
+    private PlayArea plugin;
 
-    public insidePlayArea(Plots plot){
-        this.plot = plot;
+    public insidePlayArea(PlayArea plugin){
+        this.plugin = plugin;
     }
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
@@ -27,71 +28,71 @@ public class insidePlayArea implements CommandExecutor{
             return false;
         }
 
+        if(plugin.getAllPlots().isEmpty()){
+            player.sendMessage(ChatColor.RED + "Cannot modify inside of play area. No play area exists");
+            return false;
+        }
+
+
         try{
             if(args.length >= 2){
-                if(plot.isPlotEmpty()){
-                    player.sendMessage(ChatColor.RED + "Cannot modify inside of play area. No play area exists");
-                    return false;
-                }
-                //turn into switch statement
-                String arg_zero = args[0].toLowerCase();
-
-                switch(arg_zero){
+                Plots p = plugin.getAllPlots().get(Integer.parseInt(args[0]));
+                switch(args[1].toLowerCase()){
                     case "potions":
                         if(args.length >= 3){
-                            if(plot.isPotionsModOn()){
-                                String potionType = args[1].toUpperCase();
-                                Integer duration = Integer.parseInt(args[2]);
-                                Integer amplifier = Integer.parseInt(args[3]);
+                            if(p.getPotionSettings().isPotionsModOn()){
+                                String potionType = args[2].toUpperCase();
+                                Integer duration = Integer.parseInt(args[3]);
+                                Integer amplifier = Integer.parseInt(args[4]);
 
-                                plot.setInsidePotionType(plot.getBlockArea(), player, potionType, duration, amplifier);
+                                p.setInsidePotionType(p.getBlockArea(), player, potionType, duration, amplifier);
                             }
                             else{
                                 player.sendMessage(ChatColor.RED + "Potions modifier is not turned on");
                             }
                         }
                         else{
-                            player.sendMessage(ChatColor.RED + "Invalid Input. /insideplayarea <potions> <duration> <amplifier>");
+                            player.sendMessage(ChatColor.RED + "Invalid Input. /insideplayarea <plotID> <potions> <type> <duration> <amplifier>");
                         }
                         break;
                     case "messages":
-                        if(plot.isMessageModOn()){
+                        if(p.getMessageSettings().isMessageModOn()){
                             String tmp_message = "";
 
-                            for(int i = 1; i < args.length; i++) {
-                                if(i == 1){
+                            for(int i = 2; i < args.length; i++) {
+                                if(i == 2){
                                     tmp_message = tmp_message + args[i];
                                     continue;
                                 }
                                 tmp_message = tmp_message + " " + args[i];
                             }
-                            plot.setMessageSettings(tmp_message, true, player);
+                            p.setMessageSettings(tmp_message, true, player);
                         }
                         else{
                             player.sendMessage(ChatColor.RED + "Message modifier is not turned on");
                         }
                         break;
                     case "mobs":
-                        if(plot.isMobModOn()){
-                            plot.setMobSettings(Double.parseDouble(args[1]), true, player);
+                        if(p.getMobSettings().isMobModOn()){
+                            p.setMobSettings(Double.parseDouble(args[2]), true, player);
                         }
                         else{
                             player.sendMessage(ChatColor.RED + "Mob modifier is not turned on");
                         }
                         break;
                     default:
-                        player.sendMessage(ChatColor.RED + "Invalid Input. /insideplayarea <modtype> <variable> ....");
+                        player.sendMessage(ChatColor.RED + "Invalid Input. /insideplayarea <plotID> <modtype> <variable> ....");
                 }
             }
             else{
-                player.sendMessage(ChatColor.RED + "Invalid Input. /insideplayarea <modtype> <variable> ....");
+                player.sendMessage(ChatColor.RED + "Invalid Input. /insideplayarea <plotID> <modtype> <variable> ....");
             }
         }
         catch(IllegalArgumentException e){
-            player.sendMessage(ChatColor.RED + "Invalid Input. /insideplayarea <modtype> <variable> ....");
+            player.sendMessage(ChatColor.RED + "Invalid Input. /insideplayarea <plotID> <modtype> <variable> ....");
         }
 
-        return true;
+        return false;
     }
 
 }

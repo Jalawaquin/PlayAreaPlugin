@@ -13,25 +13,21 @@ import java.util.UUID;
 
 public class Plots {
     private HashMap<String, UUID> blockArea;
-    private ArrayList<Location> block_locations;
-    private int num_of_locations;
     //play area settings
     private PlayAreaPotionSettings potionSettings;
     private PlayAreaMessageSettings messageSettings;
     private PlayAreaMobSettings mobSettings;
-
+    private int plotID;
     public Plots(){
         this.blockArea = new HashMap<>();
-        this.block_locations = new ArrayList<>();
-        this.num_of_locations = 0;
         this.potionSettings = new PlayAreaPotionSettings();
         this.messageSettings = new PlayAreaMessageSettings();
         this.mobSettings = new PlayAreaMobSettings();
+        this.plotID = 0;
     }
 
     // mob damage settings
     public PlayAreaMobSettings getMobSettings(){return this.mobSettings;}
-    public boolean isMobModOn(){return mobSettings.getMobs();}
     public boolean playAreaMobs(String bool){
         switch(bool){
             case "on":
@@ -41,7 +37,7 @@ public class Plots {
                 mobSettings = new PlayAreaMobSettings();
                 break;
         }
-        return mobSettings.getMobs();
+        return mobSettings.isMobModOn();
     }
     public void setMobSettings(Double mobModifier, boolean inside, Player player){
         if(inside){
@@ -55,7 +51,6 @@ public class Plots {
     }
     // message settings
     public PlayAreaMessageSettings getMessageSettings(){ return this.messageSettings; }
-    public boolean isMessageModOn(){return messageSettings.getMessage();}
     public boolean playAreaMessage(String bool){
         switch(bool){
             case "on":
@@ -66,7 +61,7 @@ public class Plots {
                 break;
         }
 
-        return messageSettings.getMessage();
+        return messageSettings.isMessageModOn();
     }
     public void setMessageSettings(String message, boolean inside, Player player){
         if(inside){
@@ -96,9 +91,6 @@ public class Plots {
         potionSettings = new PlayAreaPotionSettings();
     }
 
-    public boolean isPotionsModOn(){
-        return potionSettings.getPotions();
-    }
     public boolean playAreaPotions(String bool, Player player){
         switch(bool){
             case "on":
@@ -108,7 +100,7 @@ public class Plots {
                 clearPotions(player);
                 break;
         }
-        return potionSettings.getPotions();
+        return potionSettings.isPotionsModOn();
     }
     public void setInsidePotionType(HashMap<String, UUID> blockArea, Player player, String insidePotion, Integer insideDuration, Integer insideAmplifier){
         if(potionSettings.getInsidePotion() != null){
@@ -155,8 +147,6 @@ public class Plots {
     public void deletePlot(Player player){
         //see if you can better free memory here
         blockArea.clear();
-        block_locations.clear();
-        num_of_locations = 0;
         messageSettings = new PlayAreaMessageSettings();
         mobSettings = new PlayAreaMobSettings();
         clearPotions(player);
@@ -164,11 +154,7 @@ public class Plots {
     }
     public void setBlockArea(HashMap<String, UUID> blockArea){this.blockArea = blockArea;}
     public HashMap<String, UUID> getBlockArea(){return blockArea;}
-    public void addBlockLocation(Location block_loc){
-        block_locations.add(block_loc);
-    }
-    public ArrayList<Location> getBlockLocations(){return block_locations;}
-    public void incNumOfLocations(){num_of_locations++;}
-    public int getNumOfLocations(){return num_of_locations;}
 
+    public int getPlotID(){return plotID;}
+    public int setPlotID(int plotID){return this.plotID = plotID;}
 }
