@@ -15,20 +15,22 @@ public class deletePlayArea implements CommandExecutor {
     }
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
-        if (sender instanceof Player){
-            Player player = (Player) sender;
-            if (player.hasPermission("playarea.deleteplayarea")){
+        if (!(sender instanceof Player)){
+            return false;
+        }
 
-                if(!plot.isPlotEmpty()){
-                    plot.deletePlot(player);
-                }
-                else{
-                    player.sendMessage(ChatColor.RED + "Cannot delete play area. No play area exists.");
-                }
-            }
-            else{
-                player.sendMessage(ChatColor.RED + "You do not have the required permissions to use this command.");
-            }
+        Player player = (Player) sender;
+
+        if (!player.hasPermission("playarea.deleteplayarea")) {
+            player.sendMessage(ChatColor.RED + "You do not have the required permissions to use this command.");
+            return false;
+        }
+
+        if(!plot.isPlotEmpty()){
+            plot.deletePlot(player);
+        }
+        else{
+            player.sendMessage(ChatColor.RED + "Cannot delete play area. No play area exists.");
         }
 
         return false;

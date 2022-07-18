@@ -13,8 +13,6 @@ import java.util.UUID;
 
 public class Plots {
     private HashMap<String, UUID> blockArea;
-    private ArrayList<Location> block_locations;
-    private int num_of_locations;
     //play area settings
     private PlayAreaPotionSettings potionSettings;
     private PlayAreaMessageSettings messageSettings;
@@ -22,8 +20,6 @@ public class Plots {
 
     public Plots(){
         this.blockArea = new HashMap<>();
-        this.block_locations = new ArrayList<>();
-        this.num_of_locations = 0;
         this.potionSettings = new PlayAreaPotionSettings();
         this.messageSettings = new PlayAreaMessageSettings();
         this.mobSettings = new PlayAreaMobSettings();
@@ -155,8 +151,6 @@ public class Plots {
     public void deletePlot(Player player){
         //see if you can better free memory here
         blockArea.clear();
-        block_locations.clear();
-        num_of_locations = 0;
         messageSettings = new PlayAreaMessageSettings();
         mobSettings = new PlayAreaMobSettings();
         clearPotions(player);
@@ -164,11 +158,6 @@ public class Plots {
     }
     public void setBlockArea(HashMap<String, UUID> blockArea){this.blockArea = blockArea;}
     public HashMap<String, UUID> getBlockArea(){return blockArea;}
-    public void addBlockLocation(Location block_loc){
-        block_locations.add(block_loc);
-    }
-    public ArrayList<Location> getBlockLocations(){return block_locations;}
-    public void incNumOfLocations(){num_of_locations++;}
-    public int getNumOfLocations(){return num_of_locations;}
+
 
 }

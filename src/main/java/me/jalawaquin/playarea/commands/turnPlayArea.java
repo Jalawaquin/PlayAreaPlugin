@@ -26,13 +26,13 @@ public class turnPlayArea implements CommandExecutor{
             return false;
         }
 
+        if(plot.isPlotEmpty()){
+            player.sendMessage(ChatColor.RED + "Cannot modify play area. No play area exists.");
+            return false;
+        }
+
         try{
             if(args.length >= 2){
-
-                if(plot.isPlotEmpty()){
-                    player.sendMessage(ChatColor.RED + "Cannot modify play area. No play area exists.");
-                    return false;
-                }
 
                 String arg_zero = args[0].toLowerCase();
 
@@ -72,7 +72,6 @@ public class turnPlayArea implements CommandExecutor{
         catch(IllegalArgumentException e){
             invalidInput(player);
         }
-
 
         return true;
     }

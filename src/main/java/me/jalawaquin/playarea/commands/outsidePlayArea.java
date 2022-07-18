@@ -25,13 +25,13 @@ public class outsidePlayArea implements CommandExecutor{
             return false;
         }
 
+        if(plot.isPlotEmpty()){
+            player.sendMessage(ChatColor.RED + "Cannot modify outside of play area. No play area exists");
+            return false;
+        }
+
         try{
             if(args.length >= 2){
-                if(plot.isPlotEmpty()){
-                    player.sendMessage(ChatColor.RED + "Cannot modify outside of play area. No play area exists");
-                    return false;
-                }
-
                 //turn into switch statement
                 String arg_zero = args[0].toLowerCase();
 

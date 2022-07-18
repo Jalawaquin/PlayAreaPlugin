@@ -1,5 +1,6 @@
 package me.jalawaquin.playarea.listeners;
 
+import me.jalawaquin.playarea.PlayArea;
 import me.jalawaquin.playarea.settings.PlayAreaMessageSettings;
 import me.jalawaquin.playarea.settings.PlayAreaMobSettings;
 import me.jalawaquin.playarea.settings.PlayAreaPotionSettings;
@@ -20,21 +21,28 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class PlotAreaListener implements Listener {
-    private Plots plot;
+    private PlayArea plugin;
 
-    public PlotAreaListener(Plots plot){
-        this.plot = plot;
+    public PlotAreaListener(PlayArea plugin){
+        this.plugin = plugin;
     }
 
     @EventHandler
     public void PlotSave(PlotAreaEvent event){
-        //get play area
-        plot.setBlockArea(event.getPlotArea());
+        Plots p = new Plots();
+        p.setBlockArea(event.getPlotArea());
+
+        if(!plugin.addPlot(p)){
+            event.getPlayer().sendMessage(ChatColor.RED + "Failed. Plot overlaps with another plot");
+            return;
+        }
+        //if else play area is succesffuly set
         event.getPlayer().sendMessage(ChatColor.GREEN + "Play area set");
     }
 
     @EventHandler
     public void onDamageEvent(EntityDamageByEntityEvent event){
+        /*
         if (!plot.isMobModOn()){
             return;
         }
@@ -65,11 +73,13 @@ public class PlotAreaListener implements Listener {
             event.getEntity().sendMessage("Damage Increased by " + damageInc);
             event.setDamage(damageInc);
         }
+         */
     }
 
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event){
+        /*
         Player player = event.getPlayer();
 
         HashMap<String, UUID> blockArea = plot.getBlockArea();
@@ -124,5 +134,6 @@ public class PlotAreaListener implements Listener {
                 player.sendMessage(ChatColor.RED + (ChatColor.ITALIC + tempMessageSettings.getLeaveMessage()));
             }
         }
+         */
     }
 }
