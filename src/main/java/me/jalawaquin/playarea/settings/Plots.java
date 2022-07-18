@@ -1,30 +1,36 @@
-package me.jalawaquin.effectzone.settings;
+package me.jalawaquin.playarea.settings;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
 
 public class Plots {
     private HashMap<String, UUID> blockArea;
+    private ArrayList<Location> block_locations;
+    private int num_of_locations;
     //play area settings
-    private EffectZonePotionSettings potionSettings;
-    private EffectZoneMessageSettings messageSettings;
-    private EffectZoneMobSettings mobSettings;
+    private PlayAreaPotionSettings potionSettings;
+    private PlayAreaMessageSettings messageSettings;
+    private PlayAreaMobSettings mobSettings;
 
     public Plots(){
         this.blockArea = new HashMap<>();
-        this.potionSettings = new EffectZonePotionSettings();
-        this.messageSettings = new EffectZoneMessageSettings();
-        this.mobSettings = new EffectZoneMobSettings();
+        this.block_locations = new ArrayList<>();
+        this.num_of_locations = 0;
+        this.potionSettings = new PlayAreaPotionSettings();
+        this.messageSettings = new PlayAreaMessageSettings();
+        this.mobSettings = new PlayAreaMobSettings();
     }
 
     // mob damage settings
-    public EffectZoneMobSettings getMobSettings(){return this.mobSettings;}
+    public PlayAreaMobSettings getMobSettings(){return this.mobSettings;}
     public boolean isMobModOn(){return mobSettings.getMobs();}
     public boolean playAreaMobs(String bool){
         switch(bool){
@@ -32,7 +38,7 @@ public class Plots {
                 mobSettings.setMobs(true);
                 break;
             case "off":
-                mobSettings = new EffectZoneMobSettings();
+                mobSettings = new PlayAreaMobSettings();
                 break;
         }
         return mobSettings.getMobs();
@@ -48,7 +54,7 @@ public class Plots {
         }
     }
     // message settings
-    public EffectZoneMessageSettings getMessageSettings(){ return this.messageSettings; }
+    public PlayAreaMessageSettings getMessageSettings(){ return this.messageSettings; }
     public boolean isMessageModOn(){return messageSettings.getMessage();}
     public boolean playAreaMessage(String bool){
         switch(bool){
@@ -73,7 +79,7 @@ public class Plots {
         }
     }
     // potion functions
-    public EffectZonePotionSettings getPotionSettings(){
+    public PlayAreaPotionSettings getPotionSettings(){
         return this.potionSettings;
     }
     public void clearPotions(Player player){
@@ -87,7 +93,7 @@ public class Plots {
             player.removePotionEffect(Objects.requireNonNull(PotionEffectType.getByName(outsidePotion)));
         }
 
-        potionSettings = new EffectZonePotionSettings();
+        potionSettings = new PlayAreaPotionSettings();
     }
 
     public boolean isPotionsModOn(){
@@ -145,17 +151,24 @@ public class Plots {
     }
 
     // Hash Map / Plot functions
-
     public boolean isPlotEmpty(){return blockArea.isEmpty();}
     public void deletePlot(Player player){
         //see if you can better free memory here
         blockArea.clear();
-        messageSettings = new EffectZoneMessageSettings();
-        mobSettings = new EffectZoneMobSettings();
+        block_locations.clear();
+        num_of_locations = 0;
+        messageSettings = new PlayAreaMessageSettings();
+        mobSettings = new PlayAreaMobSettings();
         clearPotions(player);
         player.sendMessage(ChatColor.GREEN + "Play area deleted");
     }
     public void setBlockArea(HashMap<String, UUID> blockArea){this.blockArea = blockArea;}
     public HashMap<String, UUID> getBlockArea(){return blockArea;}
+    public void addBlockLocation(Location block_loc){
+        block_locations.add(block_loc);
+    }
+    public ArrayList<Location> getBlockLocations(){return block_locations;}
+    public void incNumOfLocations(){num_of_locations++;}
+    public int getNumOfLocations(){return num_of_locations;}
 
 }

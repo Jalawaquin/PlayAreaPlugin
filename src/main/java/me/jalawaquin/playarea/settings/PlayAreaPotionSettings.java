@@ -1,6 +1,6 @@
-package me.jalawaquin.effectzone.settings;
+package me.jalawaquin.playarea.settings;
 
-public class EffectZonePotionSettings {
+public class PlayAreaPotionSettings {
     // are potions or mobs being modified?
     private boolean potions;
     private String insidePotion;
@@ -12,7 +12,7 @@ public class EffectZonePotionSettings {
     private Integer outsideDuration;
     private Integer outsideAmplifier;
 
-    public EffectZonePotionSettings(){
+    public PlayAreaPotionSettings(){
         this.potions = false;
         this.insidePotion = null;
         this.insideDuration = 0;

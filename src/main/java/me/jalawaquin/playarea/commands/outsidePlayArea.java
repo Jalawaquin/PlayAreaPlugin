@@ -1,6 +1,6 @@
-package me.jalawaquin.effectzone.commands;
+package me.jalawaquin.playarea.commands;
 
-import me.jalawaquin.effectzone.settings.Plots;
+import me.jalawaquin.playarea.settings.Plots;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -8,12 +8,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class insideEffectZone implements CommandExecutor{
+public class outsidePlayArea implements CommandExecutor{
     private Plots plot;
 
-    public insideEffectZone(Plots plot){
-        this.plot = plot;
-    }
+    public outsidePlayArea(Plots plot){this.plot = plot;}
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
         if (!(sender instanceof Player)){
@@ -22,7 +20,7 @@ public class insideEffectZone implements CommandExecutor{
 
         Player player = (Player) sender;
 
-        if (!player.hasPermission("playarea.insideplayarea")){
+        if (!player.hasPermission("playarea.outsideplayarea")){
             player.sendMessage(ChatColor.RED + "You do not have the required permissions to use this command");
             return false;
         }
@@ -30,9 +28,10 @@ public class insideEffectZone implements CommandExecutor{
         try{
             if(args.length >= 2){
                 if(plot.isPlotEmpty()){
-                    player.sendMessage(ChatColor.RED + "Cannot modify inside of play area. No play area exists");
+                    player.sendMessage(ChatColor.RED + "Cannot modify outside of play area. No play area exists");
                     return false;
                 }
+
                 //turn into switch statement
                 String arg_zero = args[0].toLowerCase();
 
@@ -44,14 +43,14 @@ public class insideEffectZone implements CommandExecutor{
                                 Integer duration = Integer.parseInt(args[2]);
                                 Integer amplifier = Integer.parseInt(args[3]);
 
-                                plot.setInsidePotionType(plot.getBlockArea(), player, potionType, duration, amplifier);
+                                plot.setOutsidePotionType(plot.getBlockArea(), player, potionType, duration, amplifier);
                             }
                             else{
                                 player.sendMessage(ChatColor.RED + "Potions modifier is not turned on");
                             }
                         }
                         else{
-                            player.sendMessage(ChatColor.RED + "Invalid Input. /insideplayarea <potions> <duration> <amplifier>");
+                            player.sendMessage(ChatColor.RED + "Invalid Input. /outsideplayarea <modtype> <variable> ....");
                         }
                         break;
                     case "messages":
@@ -65,7 +64,7 @@ public class insideEffectZone implements CommandExecutor{
                                 }
                                 tmp_message = tmp_message + " " + args[i];
                             }
-                            plot.setMessageSettings(tmp_message, true, player);
+                            plot.setMessageSettings(tmp_message, false, player);
                         }
                         else{
                             player.sendMessage(ChatColor.RED + "Message modifier is not turned on");
@@ -73,25 +72,24 @@ public class insideEffectZone implements CommandExecutor{
                         break;
                     case "mobs":
                         if(plot.isMobModOn()){
-                            plot.setMobSettings(Double.parseDouble(args[1]), true, player);
+                            plot.setMobSettings(Double.parseDouble(args[1]), false, player);
                         }
                         else{
                             player.sendMessage(ChatColor.RED + "Mob modifier is not turned on");
                         }
                         break;
                     default:
-                        player.sendMessage(ChatColor.RED + "Invalid Input. /insideplayarea <modtype> <variable> ....");
+                        player.sendMessage(ChatColor.RED + "Invalid Input. /outsideplayarea <modtype> <variable> ....");
                 }
             }
             else{
-                player.sendMessage(ChatColor.RED + "Invalid Input. /insideplayarea <modtype> <variable> ....");
+                player.sendMessage(ChatColor.RED + "Invalid Input. /outsideplayarea <modtype> <variable> ....");
             }
         }
         catch(IllegalArgumentException e){
-            player.sendMessage(ChatColor.RED + "Invalid Input. /insideplayarea <modtype> <variable> ....");
+            player.sendMessage(ChatColor.RED + "Invalid Input. /outsideplayarea <modtype> <variable> ....");
         }
 
         return true;
     }
-
 }
