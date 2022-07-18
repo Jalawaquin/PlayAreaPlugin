@@ -7,8 +7,7 @@ import me.jalawaquin.playarea.settings.Plots;
 import me.jalawaquin.playarea.events.PlotAreaEvent;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Monster;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -36,11 +35,12 @@ public class PlotAreaListener implements Listener {
 
     @EventHandler
     public void onDamageEvent(EntityDamageByEntityEvent event){
-        if(!(event.getDamager() instanceof Monster)) {
+        if (!plot.isMobModOn()){
             return;
         }
 
-        if (!plot.isMobModOn()){
+        //only damage that should be increased is done by non-player events
+        if(event.getDamager() instanceof Player){
             return;
         }
 
@@ -67,7 +67,7 @@ public class PlotAreaListener implements Listener {
         }
     }
 
-    // NOTE: see how many times this function is called
+
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event){
         Player player = event.getPlayer();
