@@ -1,10 +1,6 @@
 package me.jalawaquin.playarea;
 
-import me.jalawaquin.playarea.commands.deletePlayArea;
-import me.jalawaquin.playarea.commands.insidePlayArea;
-import me.jalawaquin.playarea.commands.outsidePlayArea;
-import me.jalawaquin.playarea.commands.turnPlayArea;
-import me.jalawaquin.playarea.commands.setPlayArea;
+import me.jalawaquin.playarea.commands.*;
 
 import me.jalawaquin.playarea.events.PlayEvents;
 import me.jalawaquin.playarea.listeners.PlotAreaListener;
@@ -24,11 +20,12 @@ public final class PlayArea extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
 
- //       getCommand("deletePlayArea").setExecutor(new deletePlayArea(plot));
- //       getCommand("insidePlayArea").setExecutor(new insidePlayArea(plot));
- //       getCommand("outsidePlayArea").setExecutor(new outsidePlayArea(plot));
+        getCommand("deletePlayArea").setExecutor(new deletePlayArea(this));
+        getCommand("getPlayAreaID").setExecutor(new getPlayAreaID(this));
+        getCommand("insidePlayArea").setExecutor(new insidePlayArea(this));
+        getCommand("outsidePlayArea").setExecutor(new outsidePlayArea(this));
         getCommand("setPlayArea").setExecutor(new setPlayArea());
- //       getCommand("turnPlayArea").setExecutor(new turnPlayArea(plot));
+        getCommand("turnPlayArea").setExecutor(new turnPlayArea(this));
 
         getServer().getPluginManager().registerEvents(new PlayEvents(this),this);
         getServer().getPluginManager().registerEvents(new PlotAreaListener(this), this);
@@ -45,11 +42,48 @@ public final class PlayArea extends JavaPlugin {
                 }
             }
         }
-
+        p.setPlotID(plots.size());
         plots.add(p);
+
         return true;
     }
 
+    public boolean deletePlot(String plotID){
+        if(plots.isEmpty()){
+            return false;
+        }
+
+        if(plotID.equals("all")){
+            plots.clear();
+        }
+        else{
+            plots.remove(Integer.parseInt(plotID));
+        }
+
+        return true;
+    }
+    public boolean insidePlot(String location){
+        if(!plots.isEmpty()){
+            for (Plots plot : plots) {
+                if (plot.getBlockArea().containsKey(location)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+    public Plots getCurrentPlot(String location){
+        for(Plots plot : plots){
+            if(plot.getBlockArea().containsKey(location)){
+                return plot;
+            }
+        }
+        return null;
+    }
+    public ArrayList<Plots> getAllPlots(){
+        return plots;
+    }
     //Block Location functions
     public void addBlockLocation(Location block_loc){
         block_locations.add(block_loc);

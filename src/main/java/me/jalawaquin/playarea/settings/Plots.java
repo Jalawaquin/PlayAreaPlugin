@@ -17,17 +17,17 @@ public class Plots {
     private PlayAreaPotionSettings potionSettings;
     private PlayAreaMessageSettings messageSettings;
     private PlayAreaMobSettings mobSettings;
-
+    private int plotID;
     public Plots(){
         this.blockArea = new HashMap<>();
         this.potionSettings = new PlayAreaPotionSettings();
         this.messageSettings = new PlayAreaMessageSettings();
         this.mobSettings = new PlayAreaMobSettings();
+        this.plotID = 0;
     }
 
     // mob damage settings
     public PlayAreaMobSettings getMobSettings(){return this.mobSettings;}
-    public boolean isMobModOn(){return mobSettings.getMobs();}
     public boolean playAreaMobs(String bool){
         switch(bool){
             case "on":
@@ -37,7 +37,7 @@ public class Plots {
                 mobSettings = new PlayAreaMobSettings();
                 break;
         }
-        return mobSettings.getMobs();
+        return mobSettings.isMobModOn();
     }
     public void setMobSettings(Double mobModifier, boolean inside, Player player){
         if(inside){
@@ -51,7 +51,6 @@ public class Plots {
     }
     // message settings
     public PlayAreaMessageSettings getMessageSettings(){ return this.messageSettings; }
-    public boolean isMessageModOn(){return messageSettings.getMessage();}
     public boolean playAreaMessage(String bool){
         switch(bool){
             case "on":
@@ -62,7 +61,7 @@ public class Plots {
                 break;
         }
 
-        return messageSettings.getMessage();
+        return messageSettings.isMessageModOn();
     }
     public void setMessageSettings(String message, boolean inside, Player player){
         if(inside){
@@ -92,9 +91,6 @@ public class Plots {
         potionSettings = new PlayAreaPotionSettings();
     }
 
-    public boolean isPotionsModOn(){
-        return potionSettings.getPotions();
-    }
     public boolean playAreaPotions(String bool, Player player){
         switch(bool){
             case "on":
@@ -104,7 +100,7 @@ public class Plots {
                 clearPotions(player);
                 break;
         }
-        return potionSettings.getPotions();
+        return potionSettings.isPotionsModOn();
     }
     public void setInsidePotionType(HashMap<String, UUID> blockArea, Player player, String insidePotion, Integer insideDuration, Integer insideAmplifier){
         if(potionSettings.getInsidePotion() != null){
@@ -159,5 +155,6 @@ public class Plots {
     public void setBlockArea(HashMap<String, UUID> blockArea){this.blockArea = blockArea;}
     public HashMap<String, UUID> getBlockArea(){return blockArea;}
 
-
+    public int getPlotID(){return plotID;}
+    public int setPlotID(int plotID){return this.plotID = plotID;}
 }

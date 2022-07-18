@@ -19,3 +19,6 @@ commands:
   outsidePlayArea:
     description: modify the mob or potion effects when inside play area
     aliases: outsideplayarea
+  getPlayAreaID:
+    description: get id of playarea player is standing in
+    aliases: getplayareaid

@@ -1,5 +1,6 @@
 package me.jalawaquin.playarea.commands;
 
+import me.jalawaquin.playarea.PlayArea;
 import me.jalawaquin.playarea.settings.Plots;
 
 import org.bukkit.ChatColor;
@@ -9,10 +10,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class turnPlayArea implements CommandExecutor{
-    private Plots plot;
+    private PlayArea plugin;
 
-    public turnPlayArea(Plots plot){
-        this.plot = plot;
+    public turnPlayArea(PlayArea plugin){
+        this.plugin = plugin;
     }
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
@@ -26,19 +27,17 @@ public class turnPlayArea implements CommandExecutor{
             return false;
         }
 
-        if(plot.isPlotEmpty()){
+        if(plugin.getAllPlots().isEmpty()){
             player.sendMessage(ChatColor.RED + "Cannot modify play area. No play area exists.");
             return false;
         }
+        Plots p = plugin.getAllPlots().get(0);
 
         try{
             if(args.length >= 2){
-
-                String arg_zero = args[0].toLowerCase();
-
-                switch(arg_zero){
+                switch(args[0].toLowerCase()){
                     case "potions":
-                        if(plot.playAreaPotions(args[1].toLowerCase(), player)){
+                        if(p.playAreaPotions(args[1].toLowerCase(), player)){
                             player.sendMessage(ChatColor.GREEN + "Potions modifier turned on ! Utilize /insideplayarea and /outsideplayarea to modify potions effects !");
                         }
                         else {
@@ -46,7 +45,7 @@ public class turnPlayArea implements CommandExecutor{
                         }
                         break;
                     case "messages":
-                        if(plot.playAreaMessage(args[1].toLowerCase())){
+                        if(p.playAreaMessage(args[1].toLowerCase())){
                             player.sendMessage(ChatColor.GREEN + "Message modifier turned on ! Utilize /insideplayarea and /outsideplayarea to modify enter and leaving messages !");
                         }
                         else {
@@ -54,7 +53,7 @@ public class turnPlayArea implements CommandExecutor{
                         }
                         break;
                     case "mobs":
-                        if(plot.playAreaMobs(args[1].toLowerCase())){
+                        if(p.playAreaMobs(args[1].toLowerCase())){
                             player.sendMessage(ChatColor.GREEN + "Mob modifier turned on ! Utilize /insideplayarea and /outsideplayarea to modify mob damage !");
                         }
                         else{
@@ -73,7 +72,7 @@ public class turnPlayArea implements CommandExecutor{
             invalidInput(player);
         }
 
-        return true;
+        return false;
     }
 
     private void invalidInput(Player player){

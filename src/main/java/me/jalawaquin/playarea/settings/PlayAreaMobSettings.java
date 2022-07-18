@@ -1,9 +1,9 @@
 package me.jalawaquin.playarea.settings;
 
 public class PlayAreaMobSettings {
-    private boolean mobs;
+    private static boolean mobs;
     private double insideMobModifier;
-    private double outsideMobModifier;
+    private static double outsideMobModifier;
 
     public PlayAreaMobSettings(){
         this.mobs = false;
@@ -16,7 +16,7 @@ public class PlayAreaMobSettings {
 
     public void setOutsideMobModifier(Double outsideMobModifier) {this.outsideMobModifier = outsideMobModifier;}
 
-    public boolean getMobs(){return mobs;}
+    public boolean isMobModOn(){return mobs;}
 
     public double getInsideMobModifier(){return insideMobModifier;}
 

@@ -1,5 +1,6 @@
 package me.jalawaquin.playarea.commands;
 
+import me.jalawaquin.playarea.PlayArea;
 import me.jalawaquin.playarea.settings.Plots;
 
 import org.bukkit.ChatColor;
@@ -9,9 +10,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class deletePlayArea implements CommandExecutor {
-    private Plots plot;
-    public deletePlayArea(Plots plot){
-        this.plot = plot;
+    private PlayArea plugin;
+    public deletePlayArea(PlayArea plugin){
+        this.plugin = plugin;
     }
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
@@ -26,11 +27,24 @@ public class deletePlayArea implements CommandExecutor {
             return false;
         }
 
-        if(!plot.isPlotEmpty()){
-            plot.deletePlot(player);
+        if(plugin.getAllPlots().isEmpty()){
+            player.sendMessage(ChatColor.RED + "Cannot delete play areas. No play areas exist.");
+            return false;
         }
-        else{
-            player.sendMessage(ChatColor.RED + "Cannot delete play area. No play area exists.");
+
+        try{
+            if(args.length >= 1 && args[0] != null){
+                if(plugin.deletePlot(args[0].toLowerCase())){
+                    player.sendMessage(ChatColor.RED + (ChatColor.BOLD + "Play area(s) " + args[0] + " deleted"));
+                }
+                else{
+                    player.sendMessage(ChatColor.RED + "Cannot delete play area. No play area exists.");
+                }
+
+            }
+        }
+        catch(IllegalArgumentException e){
+            player.sendMessage("Invalid Input. /deleteplayarea <plotID>");
         }
 
         return false;
