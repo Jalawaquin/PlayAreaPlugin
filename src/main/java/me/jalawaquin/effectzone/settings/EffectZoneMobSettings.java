@@ -1,11 +1,11 @@
-package me.jalawaquin.playarea.settings;
+package me.jalawaquin.effectzone.settings;
 
-public class PlayAreaMobSettings {
+public class EffectZoneMobSettings {
     private boolean mobs;
     private double insideMobModifier;
     private double outsideMobModifier;
 
-    public PlayAreaMobSettings(){
+    public EffectZoneMobSettings(){
         this.mobs = false;
         this.insideMobModifier = 0;
         this.outsideMobModifier = 0;

@@ -1,6 +1,6 @@
-package me.jalawaquin.playarea.commands;
+package me.jalawaquin.effectzone.commands;
 
-import me.jalawaquin.playarea.settings.Plots;
+import me.jalawaquin.effectzone.settings.Plots;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -8,10 +8,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class turnPlayArea implements CommandExecutor{
+public class turnEffectZone implements CommandExecutor{
     private Plots plot;
 
-    public turnPlayArea(Plots plot){
+    public turnEffectZone(Plots plot){
         this.plot = plot;
     }
     @Override
@@ -21,7 +21,7 @@ public class turnPlayArea implements CommandExecutor{
         }
         Player player = (Player) sender;
 
-        if (!player.hasPermission("playarea.turnplayarea")){
+        if (!player.hasPermission("playarea.turneffectzone")){
             player.sendMessage(ChatColor.RED + "You do not have the required permissions to use this command.");
             return false;
         }
@@ -30,7 +30,7 @@ public class turnPlayArea implements CommandExecutor{
             if(args.length >= 2){
 
                 if(plot.isPlotEmpty()){
-                    player.sendMessage(ChatColor.RED + "Cannot modify play area. No play area exists.");
+                    player.sendMessage(ChatColor.RED + "Cannot modify effect zone. No effect zone exists.");
                     return false;
                 }
 
@@ -39,7 +39,7 @@ public class turnPlayArea implements CommandExecutor{
                 switch(arg_zero){
                     case "potions":
                         if(plot.playAreaPotions(args[1].toLowerCase(), player)){
-                            player.sendMessage(ChatColor.GREEN + "Potions modifier turned on ! Utilize /insideplayarea and /outsideplayarea to modify potions effects !");
+                            player.sendMessage(ChatColor.GREEN + "Potions modifier turned on ! Utilize /insideeffectzone and /outsideeffectzone to modify potions effects !");
                         }
                         else {
                             player.sendMessage(ChatColor.GREEN + "Potions modifier turned off !");
@@ -47,7 +47,7 @@ public class turnPlayArea implements CommandExecutor{
                         break;
                     case "messages":
                         if(plot.playAreaMessage(args[1].toLowerCase())){
-                            player.sendMessage(ChatColor.GREEN + "Message modifier turned on ! Utilize /insideplayarea and /outsideplayarea to modify enter and leaving messages !");
+                            player.sendMessage(ChatColor.GREEN + "Message modifier turned on ! Utilize /insideeffectzone and /outsideeffectzone to modify enter and leaving messages !");
                         }
                         else {
                             player.sendMessage(ChatColor.GREEN + "Message modifier turned off !");
@@ -55,7 +55,7 @@ public class turnPlayArea implements CommandExecutor{
                         break;
                     case "mobs":
                         if(plot.playAreaMobs(args[1].toLowerCase())){
-                            player.sendMessage(ChatColor.GREEN + "Mob modifier turned on ! Utilize /insideplayarea and /outsideplayarea to modify mob damage !");
+                            player.sendMessage(ChatColor.GREEN + "Mob modifier turned on ! Utilize /insideeffectzone and /outsideeffectzone to modify mob damage !");
                         }
                         else{
                             player.sendMessage(ChatColor.GREEN + "Mob modifier turned off !");

@@ -1,11 +1,11 @@
-package me.jalawaquin.playarea.settings;
+package me.jalawaquin.effectzone.settings;
 
-public class PlayAreaMessageSettings {
+public class EffectZoneMessageSettings {
     private boolean message;
     private String enterMessage;
     private String leaveMessage;
 
-    public PlayAreaMessageSettings(){
+    public EffectZoneMessageSettings(){
         this.message = true;
         this.enterMessage = "You are now entering the play area.";
         this.leaveMessage = "You are now leaving the play area";

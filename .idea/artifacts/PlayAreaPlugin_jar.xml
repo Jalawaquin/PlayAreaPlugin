@@ -2,7 +2,7 @@
   <artifact type="jar" name="PlayAreaPlugin:jar">
     <output-path>$USER_HOME$/Desktop/Plugins/Server/plugins</output-path>
     <root id="archive" name="PlayAreaPlugin.jar">
-      <element id="module-output" name="PlayAreaPlugin" />
+      <element id="module-output" name="EffectZonePlugin" />
     </root>
   </artifact>
 </component>
