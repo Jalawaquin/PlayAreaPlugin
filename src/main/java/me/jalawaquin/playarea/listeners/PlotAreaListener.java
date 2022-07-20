@@ -95,14 +95,14 @@ public class PlotAreaListener implements Listener {
             // Remove outside potion effects if outsidePotionEffect not null
 
             if(p.getPotionSettings().isPotionsModOn() && p.getPotionSettings().getOutsidePotion() != null){
-                player.removePotionEffect(Objects.requireNonNull(PotionEffectType.getByName(p.getPotionSettings().getOutsidePotion())));
+                player.removePotionEffect(Objects.requireNonNull((p.getPotionSettings().getOutsidePotion())));
             }
 
             //if potions modifier is on
             if (p.getPotionSettings().isPotionsModOn() && p.getPotionSettings().getInsideDuration() != null
                     && p.getPotionSettings().getInsideAmplifier() != null && p.getPotionSettings().getInsidePotion() != null) {
                 // Add Effects if player is inside plot
-                player.addPotionEffect(new PotionEffect(Objects.requireNonNull(PotionEffectType.getByName(p.getPotionSettings().getInsidePotion())),
+                player.addPotionEffect(new PotionEffect(Objects.requireNonNull(p.getPotionSettings().getInsidePotion()),
                         p.getPotionSettings().getInsideDuration() * 20, p.getPotionSettings().getInsideAmplifier()));
             }
             //if messages mod on
@@ -114,18 +114,18 @@ public class PlotAreaListener implements Listener {
             Plots p = plugin.getCurrentPlot(currentBlockFrom);
             // Remove inside potion effects if outsidePotionEffect not null
             if(p.getPotionSettings().isPotionsModOn() && p.getPotionSettings().getInsidePotion() != null){
-                player.removePotionEffect(Objects.requireNonNull(PotionEffectType.getByName(p.getPotionSettings().getInsidePotion())));
+                player.removePotionEffect(Objects.requireNonNull(p.getPotionSettings().getInsidePotion()));
             }
 
             // if potions modifier turned on
             if(p.getPotionSettings().isPotionsModOn() && p.getPotionSettings().getOutsidePotion() != null && p.getPotionSettings().getOutsideDuration() != null
                     && p.getPotionSettings().getOutsideAmplifier() != null ){
                 //Add Effects if player is outside plot
-                player.addPotionEffect(new PotionEffect(Objects.requireNonNull(PotionEffectType.getByName(p.getPotionSettings().getOutsidePotion())),
+                player.addPotionEffect(new PotionEffect(Objects.requireNonNull(p.getPotionSettings().getOutsidePotion()),
                         p.getPotionSettings().getOutsideDuration() * 20, p.getPotionSettings().getOutsideAmplifier()));
             }
 
-            if(p.getMessageSettings().isMessageModOn()){
+            if(p.getMessageSettings().isMessageModOn() && p.getMessageSettings().getLeaveMessage().equals("You are now leaving play area: ")){
                 player.sendMessage(ChatColor.RED + (ChatColor.ITALIC + p.getMessageSettings().getLeaveMessage() + p.getPlotID()));
             }
         }

@@ -1,14 +1,16 @@
 package me.jalawaquin.playarea.settings;
 
+import org.bukkit.potion.PotionEffectType;
+
 public class PlayAreaPotionSettings {
     // are potions or mobs being modified?
     private static boolean potions;
-    private String insidePotion;
+    private PotionEffectType insidePotion;
     private int insideDuration;
     private int insideAmplifier;
 
     //outside status effects are universal
-    private static String outsidePotion;
+    private static PotionEffectType outsidePotion;
     private static Integer outsideDuration;
     private static Integer outsideAmplifier;
 
@@ -27,18 +29,18 @@ public class PlayAreaPotionSettings {
 
     public void setPotions(boolean potions){ this.potions = potions; }
 
-    public void setInsidePotion(String insidePotion, Integer insideDuration, Integer insideAmplifier){
+    public void setInsidePotion(PotionEffectType insidePotion, Integer insideDuration, Integer insideAmplifier){
         this.insidePotion = insidePotion;
         this.insideDuration = insideDuration;
         this.insideAmplifier = insideAmplifier;
     }
-    public void setOutsidePotion(String outsidePotion, Integer outsideDuration, Integer outsideAmplifier){
+    public void setOutsidePotion(PotionEffectType outsidePotion, Integer outsideDuration, Integer outsideAmplifier){
         this.outsidePotion = outsidePotion;
         this.outsideDuration = outsideDuration;
         this.outsideAmplifier = outsideAmplifier;
     }
 
-    public String getInsidePotion(){
+    public PotionEffectType getInsidePotion(){
         return insidePotion;
     }
     public Integer getInsideDuration(){
@@ -49,7 +51,7 @@ public class PlayAreaPotionSettings {
         return insideAmplifier;
     }
 
-    public String getOutsidePotion(){
+    public PotionEffectType getOutsidePotion(){
         return outsidePotion;
     }
 
