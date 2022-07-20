@@ -32,30 +32,31 @@ public class outsidePlayArea implements CommandExecutor{
             return false;
         }
 
-        if(args.length >= 2){
+        if(args.length < 2){
+            invalidInput(player);
+            return false;
+        }
+
+        try{
             Plots p = plugin.getAllPlots().get(0);
             switch(args[0].toLowerCase()){
                 case "potions":
-                    if(args.length >= 3){
-                        if(p.getPotionSettings().isPotionsModOn()){
-                            try{
-                                PotionEffectType potionType = PotionEffectType.getByName(args[1].toUpperCase());
-                                Integer duration = Integer.parseInt(args[2]);
-                                Integer amplifier = Integer.parseInt(args[3]);
+                    if(args.length < 3) {
+                        invalidInput(player);
+                        break;
+                    }
 
-                                p.setOutsidePotionType(p.getBlockArea(), player, potionType, duration, amplifier);
-                            }
-                            catch(Exception e){
-                                invalidInput(player);
-                            }
-                        }
-                        else{
-                            invalidInput(player);
-                        }
+                    if(p.getPotionSettings().isPotionsModOn()){
+                        PotionEffectType potionType = PotionEffectType.getByName(args[1].toUpperCase());
+                        Integer duration = Integer.parseInt(args[2]);
+                        Integer amplifier = Integer.parseInt(args[3]);
+
+                        p.setOutsidePotionType(p.getBlockArea(), player, potionType, duration, amplifier);
                     }
                     else{
-                        invalidInput(player);
+                        player.sendMessage(ChatColor.RED + "Potions modifier is not turned on");
                     }
+
                     break;
                 case "messages":
                     if(p.getMessageSettings().isMessageModOn()){
@@ -76,13 +77,8 @@ public class outsidePlayArea implements CommandExecutor{
                     break;
                 case "mobs":
                     if(p.getMobSettings().isMobModOn()){
-                        try{
-                            double outsideMobModifier = Double.parseDouble(args[1]);
-                            p.setMobSettings(outsideMobModifier, false, player);
-                        }
-                        catch(Exception e){
-                            invalidInput(player);
-                        }
+                        double outsideMobModifier = Double.parseDouble(args[1]);
+                        p.setMobSettings(outsideMobModifier, false, player);
                     }
                     else{
                         player.sendMessage(ChatColor.RED + "Mob modifier is not turned on");
@@ -91,10 +87,11 @@ public class outsidePlayArea implements CommandExecutor{
                 default:
                     invalidInput(player);
             }
-        }
-        else{
+        }catch(Exception e){
             invalidInput(player);
         }
+        Plots p = plugin.getAllPlots().get(0);
+
 
 
         return false;

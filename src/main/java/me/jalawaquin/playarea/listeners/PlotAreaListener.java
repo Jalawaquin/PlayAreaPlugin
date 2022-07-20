@@ -33,7 +33,7 @@ public class PlotAreaListener implements Listener {
             return;
         }
         //if else play area is succesffuly set
-        event.getPlayer().sendMessage(ChatColor.GREEN + "Play area set");
+        event.getPlayer().sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Play area set"));
     }
 
     @EventHandler
@@ -128,6 +128,8 @@ public class PlotAreaListener implements Listener {
             if(p.getMessageSettings().isMessageModOn() && p.getMessageSettings().getLeaveMessage().equals("You are now leaving play area: ")){
                 player.sendMessage(ChatColor.RED + (ChatColor.ITALIC + p.getMessageSettings().getLeaveMessage() + p.getPlotID()));
             }
+
+
         }
 
     }

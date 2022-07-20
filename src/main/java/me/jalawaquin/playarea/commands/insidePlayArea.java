@@ -35,31 +35,30 @@ public class insidePlayArea implements CommandExecutor{
         }
 
 
+        // Note: make this cleaner
+        if(args.length < 2) {
+            invalidInput(player);
+            return false;
+        }
 
-        if(args.length >= 2){
-            //check if id exists, else then error
+        try{
             Plots p = plugin.getAllPlots().get(Integer.parseInt(args[0]));
             switch(args[1].toLowerCase()){
                 case "potions":
-                    if(args.length >= 3){
-                        if(p.getPotionSettings().isPotionsModOn()){
-                            try {
-                                PotionEffectType potionType = PotionEffectType.getByName(args[2].toUpperCase());
-                                Integer duration = Integer.parseInt(args[3]);
-                                Integer amplifier = Integer.parseInt(args[4]);
+                    if(args.length < 3) {
+                        player.sendMessage(ChatColor.RED + "Invalid Input. /insideplayarea <plotID> <potions> <type> <duration> <amplifier>");
+                        break;
+                    }
 
-                                p.setInsidePotionType(p.getBlockArea(), player, potionType, duration, amplifier);
-                            }
-                            catch(Exception e){
-                                player.sendMessage(ChatColor.RED + "Invalid Input. /insideplayarea <plotID> <potions> <type> <duration> <amplifier>");
-                            }
-                        }
-                        else{
-                            player.sendMessage(ChatColor.RED + "Potions modifier is not turned on");
-                        }
+                    if(p.getPotionSettings().isPotionsModOn()){
+                        PotionEffectType potionType = PotionEffectType.getByName(args[2].toUpperCase());
+                        Integer duration = Integer.parseInt(args[3]);
+                        Integer amplifier = Integer.parseInt(args[4]);
+
+                        p.setInsidePotionType(p.getBlockArea(), player, potionType, duration, amplifier);
                     }
                     else{
-                        player.sendMessage(ChatColor.RED + "Invalid Input. /insideplayarea <plotID> <potions> <type> <duration> <amplifier>");
+                        player.sendMessage(ChatColor.RED + "Potions modifier is not turned on");
                     }
                     break;
                 case "messages":
@@ -81,13 +80,8 @@ public class insidePlayArea implements CommandExecutor{
                     break;
                 case "mobs":
                     if(p.getMobSettings().isMobModOn()){
-                        try{
-                            double insideMobModifier = Double.parseDouble(args[2]);
-                            p.setMobSettings(insideMobModifier, true, player);
-                        }
-                        catch(Exception e){
-                            invalidInput(player);
-                        }
+                        double insideMobModifier = Double.parseDouble(args[2]);
+                        p.setMobSettings(insideMobModifier, true, player);
                     }
                     else{
                         player.sendMessage(ChatColor.RED + "Mob modifier is not turned on");
@@ -96,8 +90,7 @@ public class insidePlayArea implements CommandExecutor{
                 default:
                     invalidInput(player);
             }
-        }
-        else{
+        }catch(Exception e){
             invalidInput(player);
         }
 

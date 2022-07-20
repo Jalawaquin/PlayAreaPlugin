@@ -33,18 +33,17 @@ public class deletePlayArea implements CommandExecutor {
         }
 
         try{
-            if(args.length >= 1 && args[0] != null){
-                if(plugin.deletePlot(args[0].toLowerCase())){
+            if(args.length >= 1){
+                if(plugin.deletePlot(args[0], player)){
                     player.sendMessage(ChatColor.RED + (ChatColor.BOLD + "Play area(s) " + args[0] + " deleted"));
                 }
                 else{
                     player.sendMessage(ChatColor.RED + "Cannot delete play area. No play area exists.");
                 }
-
             }
         }
-        catch(IllegalArgumentException e){
-            player.sendMessage("Invalid Input. /deleteplayarea <plotID>");
+        catch(Exception e){
+            player.sendMessage(ChatColor.RED + "Invalid Input. /deleteplayarea <plotID>");
         }
 
         return false;

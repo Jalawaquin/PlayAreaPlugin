@@ -143,15 +143,6 @@ public class Plots {
     }
 
     // Hash Map / Plot functions
-    public boolean isPlotEmpty(){return blockArea.isEmpty();}
-    public void deletePlot(Player player){
-        //see if you can better free memory here
-        blockArea.clear();
-        messageSettings = new PlayAreaMessageSettings();
-        mobSettings = new PlayAreaMobSettings();
-        clearPotions(player);
-        player.sendMessage(ChatColor.GREEN + "Play area deleted");
-    }
     public void setBlockArea(HashMap<String, UUID> blockArea){this.blockArea = blockArea;}
     public HashMap<String, UUID> getBlockArea(){return blockArea;}
 

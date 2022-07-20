@@ -33,8 +33,6 @@ public class setPlayArea implements CommandExecutor {
         itemstack.setItemMeta(meta);
         player.getInventory().addItem(itemstack);
 
-
-
         return false;
     }
 }
