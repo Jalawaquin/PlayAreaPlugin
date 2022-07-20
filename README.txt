@@ -4,3 +4,32 @@ If a player wanders in or out of any of these plots, customizable messages, poti
 
 potions list
 https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html
+
+commands:
+Desc: deletes plot of specific ID. enter 'all' to clear all plots.
+/deleteplayarea <plotID> 
+
+Desc: gets the ID of the plot you are standing in
+/getplayareaid
+
+Desc: recieve 'play area tool' to begin setting plots
+/setplayarea 
+
+Desc: turns playarea settings on and off
+/turnplayarea <modtype> 
+              <potions> <on/off> (off by default)
+              <messages> <on/off> (on by default)
+              <mobs> <on/off> (off by default)
+
+Note: Specific to each plot.
+/insideplayarea <plotID> <modtype>
+                         <potions> <type> <duration> <amplifier>
+                         <messages> <custom message>
+                         <mobs> <damage> 
+                         
+Note: Universal (everytime you step out from inside a plot, these custom settings apply)                         
+/outsideplayarea <modtype>
+                 <potions> <type> <duration> <amplifier>
+                 <messages> <custom message>
+                 <mobs> <damage>
+               
