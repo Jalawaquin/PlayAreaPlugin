@@ -28,7 +28,7 @@ public class deletePlayArea implements CommandExecutor {
         }
 
         if(plugin.getAllPlots().isEmpty()){
-            player.sendMessage(ChatColor.RED + "Cannot delete play areas. No play areas exist.");
+            player.sendMessage(ChatColor.RED + "Cannot delete play areas. No play areas exist");
             return false;
         }
 
@@ -38,7 +38,7 @@ public class deletePlayArea implements CommandExecutor {
                     player.sendMessage(ChatColor.RED + (ChatColor.BOLD + "Play area(s) " + args[0] + " deleted"));
                 }
                 else{
-                    player.sendMessage(ChatColor.RED + "Cannot delete play area. No play area exists.");
+                    player.sendMessage(ChatColor.RED + "Cannot delete play area. Play area ID: " + args[0] + ", does not exist");
                 }
             }
         }

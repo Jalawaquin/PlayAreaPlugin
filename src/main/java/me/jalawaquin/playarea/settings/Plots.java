@@ -45,7 +45,7 @@ public class Plots {
         }
         else{
             mobSettings.setOutsideMobModifier(mobModifier);
-            player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Mob damage increased by" + mobModifier + " outside the play area"));
+            player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Mob damage increased by " + mobModifier + " outside the play area"));
         }
     }
     // message settings
@@ -75,72 +75,6 @@ public class Plots {
     // potion functions
     public PlayAreaPotionSettings getPotionSettings(){
         return this.potionSettings;
-    }
-    public void clearInsidePotions(Player player){
-        if(potionSettings.getInsidePotion() != null){
-            player.removePotionEffect(Objects.requireNonNull(potionSettings.getInsidePotion()));
-        }
-        potionSettings.setInsidePotion(null, 0, 0);
-    }
-
-    public void clearOutsidePotions(Player player){
-        if(potionSettings.getOutsidePotion() != null){
-            player.removePotionEffect(Objects.requireNonNull(potionSettings.getOutsidePotion()));
-        }
-
-        potionSettings.setOutsidePotion(null, 0, 0);
-    }
-
-    public boolean playAreaPotions(String bool){
-        switch(bool){
-            case "on":
-                potionSettings.setPotions(true);
-                break;
-            case "off":
-                potionSettings.setPotions(false);
-                break;
-        }
-        return potionSettings.isPotionsModOn();
-    }
-    public void setInsidePotionType(HashMap<String, UUID> blockArea, Player player, PotionEffectType insidePotion, Integer insideDuration, Integer insideAmplifier){
-        if(potionSettings.getInsidePotion() != null){
-            player.removePotionEffect(Objects.requireNonNull(potionSettings.getInsidePotion()));
-        }
-
-        //check if inside potion is valid
-        potionSettings.setInsidePotion(insidePotion, insideDuration, insideAmplifier);
-
-        String playerLocation = player.getLocation().getBlockX() + "." + player.getLocation().getBlockZ();
-
-
-        if(blockArea.containsKey(playerLocation)){
-            //if potions modifier is on
-            if (insideDuration != null && insideAmplifier != null) {
-                // Add Effects if player is inside plot
-                player.addPotionEffect(new PotionEffect(Objects.requireNonNull(potionSettings.getInsidePotion()),
-                        potionSettings.getInsideDuration() * 20, potionSettings.getInsideAmplifier()));
-            }
-        }
-        player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + potionSettings.getInsidePotion().getName() + " potion applied to inside of play area"));
-    }
-    //Redundant
-    public void setOutsidePotionType(HashMap<String, UUID> blockArea, Player player, PotionEffectType outsidePotion, Integer outsideDuration, Integer outsideAmplifier){
-        if(potionSettings.getOutsidePotion() != null){
-            player.removePotionEffect(Objects.requireNonNull(potionSettings.getOutsidePotion()));
-        }
-
-        potionSettings.setOutsidePotion(outsidePotion, outsideDuration, outsideAmplifier);
-
-        String playerLocation = player.getLocation().getBlockX() + "." + player.getLocation().getBlockZ();
-
-        if(!blockArea.containsKey(playerLocation)){
-            if(outsideDuration != null && outsideAmplifier != null){
-                //Add Effects if player is outside plot
-                player.addPotionEffect(new PotionEffect(Objects.requireNonNull(potionSettings.getOutsidePotion()),
-                        potionSettings.getOutsideDuration() * 20, potionSettings.getOutsideAmplifier()));
-            }
-        }
-        player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + potionSettings.getOutsidePotion().getName() + " applied to outside of play area"));
     }
 
     // Hash Map / Plot functions

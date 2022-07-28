@@ -50,12 +50,12 @@ public class insidePlayArea implements CommandExecutor{
                         break;
                     }
 
-                    if(p.getPotionSettings().isPotionsModOn()){
+                    if(plugin.isPotionsModOn()){
                         PotionEffectType potionType = PotionEffectType.getByName(args[2].toUpperCase());
                         Integer duration = Integer.parseInt(args[3]);
                         Integer amplifier = Integer.parseInt(args[4]);
 
-                        p.setInsidePotionType(p.getBlockArea(), player, potionType, duration, amplifier);
+                        p.getPotionSettings().setInsidePotionType(p.getBlockArea(), player, potionType, duration, amplifier);
                     }
                     else{
                         player.sendMessage(ChatColor.RED + "Potions modifier is not turned on");

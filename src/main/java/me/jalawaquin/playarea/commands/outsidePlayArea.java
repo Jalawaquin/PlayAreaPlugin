@@ -46,12 +46,13 @@ public class outsidePlayArea implements CommandExecutor{
                         break;
                     }
 
-                    if(p.getPotionSettings().isPotionsModOn()){
+                    if(plugin.isPotionsModOn()){
                         PotionEffectType potionType = PotionEffectType.getByName(args[1].toUpperCase());
                         Integer duration = Integer.parseInt(args[2]);
                         Integer amplifier = Integer.parseInt(args[3]);
 
-                        p.setOutsidePotionType(p.getBlockArea(), player, potionType, duration, amplifier);
+                        //p.getblockarea only calls 0 change to apply to only the current area player is in
+                        plugin.getOutsidePotionSettings().setOutsidePotionType(plugin, player, potionType, duration, amplifier);
                     }
                     else{
                         player.sendMessage(ChatColor.RED + "Potions modifier is not turned on");

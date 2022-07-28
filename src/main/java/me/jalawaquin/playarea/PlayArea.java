@@ -4,18 +4,27 @@ import me.jalawaquin.playarea.commands.*;
 
 import me.jalawaquin.playarea.events.PlayEvents;
 import me.jalawaquin.playarea.listeners.PlotAreaListener;
+import me.jalawaquin.playarea.settings.OutsidePotionSettings;
 import me.jalawaquin.playarea.settings.Plots;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 
 public final class PlayArea extends JavaPlugin {
-    //turn into ArrayList to have multiple plots ? (if I do this need add plot and remove plot functionality etc.)
+    //inside and outside plot variables
+
+    private boolean potions;
     private ArrayList<Plots> plots = new ArrayList<>();
+    private OutsidePotionSettings outsidePotionSettings= new OutsidePotionSettings();
+    //Setting up plot variables
     private ArrayList<Location> block_locations = new ArrayList<>();
     private int num_of_locations = 0;
+
 
     @Override
     public void onEnable() {
@@ -31,7 +40,37 @@ public final class PlayArea extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayEvents(this),this);
         getServer().getPluginManager().registerEvents(new PlotAreaListener(this), this);
     }
+    //plot modifier functions
+    //potions
+    public void clearAllPotions(Player player){
+        String playerLocation = player.getLocation().getBlockX() + "." + player.getLocation().getBlockZ();
 
+        for(Plots plot : plots){
+            if(plot.getBlockArea().containsKey(playerLocation)){
+                plot.getPotionSettings().clearInsidePotions(player);
+            }
+        }
+
+        getOutsidePotionSettings().clearOutsidePotions(player);
+    }
+    public OutsidePotionSettings getOutsidePotionSettings(){
+        return this.outsidePotionSettings;
+    }
+    public boolean isPotionsModOn(){
+        return this.potions;
+    }
+    public boolean playAreaPotions(String bool){
+        switch(bool){
+            case "on":
+                potions = true;
+                break;
+            case "off":
+                potions = false;
+                break;
+        }
+        return potions;
+    }
+    //add plot functions
     public boolean addPlot(Plots p){
         //If all plots in arraylist do not overlap with p, add plot
         if(!plots.isEmpty()){
@@ -55,18 +94,47 @@ public final class PlayArea extends JavaPlugin {
         }
 
         if(plotID.equalsIgnoreCase("all")){
+            //if potions modifier is on, clear all potions
+            if(potions){
+                clearAllPotions(player);
+                outsidePotionSettings.clearOutsidePotions(player);
+                potions = false;
+            }
+
             plots.clear();
             return true;
         }
 
         for(int i = 0; i < plots.size(); i++){
             if(plots.get(i).getPlotID() == Integer.parseInt(plotID)){
-                plots.get(i).clearInsidePotions(player);
+                plots.get(i).getPotionSettings().clearInsidePotions(player);
+
+                //if player is inside plot and plot is not final plot, at time of deletion add outside plot modifiers
+                String playerLocation = player.getLocation().getBlockX() + "." + player.getLocation().getBlockZ();
+                if(plots.get(i).getBlockArea().containsKey(playerLocation) && plots.size() != 1){
+                    // if potions modifier on
+                    if(potions && (outsidePotionSettings.getOutsidePotion() != null && outsidePotionSettings.getOutsideDuration() != null
+                            && outsidePotionSettings.getOutsideAmplifier() != null)){
+                        //add potion effect
+                        player.addPotionEffect(new PotionEffect(outsidePotionSettings.getOutsidePotion(),
+                                outsidePotionSettings.getOutsideDuration(), outsidePotionSettings.getOutsideAmplifier()));
+                    }
+                }
+
+                //remove plot from list
                 plots.remove(i);
+
+                //if plots now empty remove any lingering potions effects
+                if(plots.isEmpty()){
+                    outsidePotionSettings.clearOutsidePotions(player);
+                    potions = false;
+                }
+
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
     public boolean insidePlot(String location){
         if(!plots.isEmpty()){
@@ -76,7 +144,6 @@ public final class PlayArea extends JavaPlugin {
                 }
             }
         }
-
         return false;
     }
     public Plots getCurrentPlot(String location){
