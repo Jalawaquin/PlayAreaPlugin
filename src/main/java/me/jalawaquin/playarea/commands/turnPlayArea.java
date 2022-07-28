@@ -39,10 +39,11 @@ public class turnPlayArea implements CommandExecutor{
             }
             switch(args[0].toLowerCase()){
                 case "potions":
-                    if(p.playAreaPotions(args[1].toLowerCase(), player)){
+                    if(p.playAreaPotions(args[1].toLowerCase())){
                         player.sendMessage(ChatColor.GREEN + "Potions modifier turned on ! Utilize /insideplayarea and /outsideplayarea to modify potions effects !");
                     }
                     else {
+                        p.clearInsidePotions(player);
                         player.sendMessage(ChatColor.GREEN + "Potions modifier turned off !");
                     }
                     break;

@@ -25,7 +25,6 @@ public class Plots {
         this.mobSettings = new PlayAreaMobSettings();
         this.plotID = 0;
     }
-
     // mob damage settings
     public PlayAreaMobSettings getMobSettings(){return this.mobSettings;}
     public boolean playAreaMobs(String bool){
@@ -77,30 +76,32 @@ public class Plots {
     public PlayAreaPotionSettings getPotionSettings(){
         return this.potionSettings;
     }
-    public void clearPotions(Player player){
-        PotionEffectType insidePotion = potionSettings.getInsidePotion();
-        PotionEffectType outsidePotion = potionSettings.getOutsidePotion();
-
-
-        player.removePotionEffect(Objects.requireNonNull(insidePotion));
-        player.removePotionEffect(Objects.requireNonNull(outsidePotion));
-
-
-        potionSettings = new PlayAreaPotionSettings();
+    public void clearInsidePotions(Player player){
+        if(potionSettings.getInsidePotion() != null){
+            player.removePotionEffect(Objects.requireNonNull(potionSettings.getInsidePotion()));
+        }
+        potionSettings.setInsidePotion(null, 0, 0);
     }
 
-    public boolean playAreaPotions(String bool, Player player){
+    public void clearOutsidePotions(Player player){
+        if(potionSettings.getOutsidePotion() != null){
+            player.removePotionEffect(Objects.requireNonNull(potionSettings.getOutsidePotion()));
+        }
+
+        potionSettings.setOutsidePotion(null, 0, 0);
+    }
+
+    public boolean playAreaPotions(String bool){
         switch(bool){
             case "on":
                 potionSettings.setPotions(true);
                 break;
             case "off":
-                clearPotions(player);
+                potionSettings.setPotions(false);
                 break;
         }
         return potionSettings.isPotionsModOn();
     }
-    //redudant
     public void setInsidePotionType(HashMap<String, UUID> blockArea, Player player, PotionEffectType insidePotion, Integer insideDuration, Integer insideAmplifier){
         if(potionSettings.getInsidePotion() != null){
             player.removePotionEffect(Objects.requireNonNull(potionSettings.getInsidePotion()));

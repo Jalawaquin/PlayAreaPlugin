@@ -5,7 +5,6 @@ import me.jalawaquin.playarea.commands.*;
 import me.jalawaquin.playarea.events.PlayEvents;
 import me.jalawaquin.playarea.listeners.PlotAreaListener;
 import me.jalawaquin.playarea.settings.Plots;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -57,10 +56,14 @@ public final class PlayArea extends JavaPlugin {
 
         if(plotID.equalsIgnoreCase("all")){
             plots.clear();
+            return true;
         }
-        else{
-            plots.get(Integer.parseInt(plotID)).clearPotions(player);
-            plots.remove(Integer.parseInt(plotID));
+
+        for(int i = 0; i < plots.size(); i++){
+            if(plots.get(i).getPlotID() == Integer.parseInt(plotID)){
+                plots.get(i).clearInsidePotions(player);
+                plots.remove(i);
+            }
         }
 
         return true;
