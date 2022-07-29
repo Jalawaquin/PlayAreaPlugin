@@ -21,15 +21,15 @@ Desc: turns playarea settings on and off
               <messages> <on/off> (on by default)
               <mobs> <on/off> (off by default)
 
-Note: Specific to each plot.
+Note: Specific to each plot. Use 'all' to apply to all plots.
 /insideplayarea <plotID> <modtype>
                          <potions> <type> <duration> <amplifier>
-                         <messages> <custom message>
+                         <entermessage> <custom message>
+                         <leavemessage> <custom message>
                          <mobs> <damage> 
                          
 Note: Universal (everytime you step out from inside a plot, these custom settings apply)                         
 /outsideplayarea <modtype>
                  <potions> <type> <duration> <amplifier>
-                 <messages> <custom message>
                  <mobs> <damage>
                
