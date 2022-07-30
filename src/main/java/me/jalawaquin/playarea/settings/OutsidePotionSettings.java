@@ -6,9 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.HashMap;
 import java.util.Objects;
-import java.util.UUID;
 
 public class OutsidePotionSettings {
     //outside status effects are universal

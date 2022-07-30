@@ -16,52 +16,24 @@ public class Plots {
     //play area settings
     private PlayAreaPotionSettings potionSettings;
     private PlayAreaMessageSettings messageSettings;
-    private PlayAreaMobSettings mobSettings;
+    private double insideMobModifier;
     private int plotID;
     public Plots(){
         this.blockArea = new HashMap<>();
         this.potionSettings = new PlayAreaPotionSettings();
         this.messageSettings = new PlayAreaMessageSettings();
-        this.mobSettings = new PlayAreaMobSettings();
+        this.insideMobModifier = 0;
         this.plotID = 0;
     }
     // mob damage settings
-    public PlayAreaMobSettings getMobSettings(){return this.mobSettings;}
-    public boolean playAreaMobs(String bool){
-        switch(bool){
-            case "on":
-                mobSettings.setMobs(true);
-                break;
-            case "off":
-                mobSettings = new PlayAreaMobSettings();
-                break;
-        }
-        return mobSettings.isMobModOn();
+    public void setInsideMobModifier(Double mobModifier, Player player){
+        insideMobModifier = mobModifier;
+        player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Mob damage increased by " + mobModifier + " inside the play area"));
     }
-    public void setMobSettings(Double mobModifier, boolean inside, Player player){
-        if(inside){
-            mobSettings.setInsideMobModifier(mobModifier);
-            player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Mob damage increased by " + mobModifier + " inside the play area"));
-        }
-        else{
-            mobSettings.setOutsideMobModifier(mobModifier);
-            player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Mob damage increased by " + mobModifier + " outside the play area"));
-        }
-    }
+
+    public double getInsideMobModifier(){return this.insideMobModifier;}
     // message settings
     public PlayAreaMessageSettings getMessageSettings(){ return this.messageSettings; }
-    public boolean playAreaMessage(String bool){
-        switch(bool){
-            case "on":
-                messageSettings.setMessage(true);
-                break;
-            case "off":
-                messageSettings.setMessage(false);
-                break;
-        }
-
-        return messageSettings.isMessageModOn();
-    }
     public void setMessageSettings(String message, boolean inside, Player player){
         if(inside){
             messageSettings.setEnterMessage(message);

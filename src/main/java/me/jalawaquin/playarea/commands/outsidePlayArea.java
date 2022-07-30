@@ -38,7 +38,6 @@ public class outsidePlayArea implements CommandExecutor{
         }
 
         try{
-            Plots p = plugin.getAllPlots().get(0);
             switch(args[0].toLowerCase()){
                 case "potions":
                     if(args.length < 3) {
@@ -57,29 +56,11 @@ public class outsidePlayArea implements CommandExecutor{
                     else{
                         player.sendMessage(ChatColor.RED + "Potions modifier is not turned on");
                     }
-
-                    break;
-                case "messages":
-                    if(p.getMessageSettings().isMessageModOn()){
-                        String tmp_message = "";
-
-                        for(int i = 1; i < args.length; i++) {
-                            if(i == 1){
-                                tmp_message = tmp_message + args[i];
-                                continue;
-                            }
-                            tmp_message = tmp_message + " " + args[i];
-                        }
-                        p.setMessageSettings(tmp_message, false, player);
-                    }
-                    else{
-                        player.sendMessage(ChatColor.RED + "Message modifier is not turned on");
-                    }
                     break;
                 case "mobs":
-                    if(p.getMobSettings().isMobModOn()){
+                    if(plugin.isMobModOn()){
                         double outsideMobModifier = Double.parseDouble(args[1]);
-                        p.setMobSettings(outsideMobModifier, false, player);
+                       plugin.setOutsideMobModifier(outsideMobModifier, player);
                     }
                     else{
                         player.sendMessage(ChatColor.RED + "Mob modifier is not turned on");

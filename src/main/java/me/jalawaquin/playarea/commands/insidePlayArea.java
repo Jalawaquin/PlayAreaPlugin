@@ -61,8 +61,8 @@ public class insidePlayArea implements CommandExecutor{
                         player.sendMessage(ChatColor.RED + "Potions modifier is not turned on");
                     }
                     break;
-                case "messages":
-                    if(p.getMessageSettings().isMessageModOn()){
+                case "entermessage":
+                    if(plugin.isMessageModOn()){
                         String tmp_message = "";
 
                         for(int i = 2; i < args.length; i++) {
@@ -78,10 +78,27 @@ public class insidePlayArea implements CommandExecutor{
                         player.sendMessage(ChatColor.RED + "Message modifier is not turned on");
                     }
                     break;
+                case "leavemessage":
+                    if(plugin.isMessageModOn()){
+                        String tmp_message = "";
+
+                        for(int i = 1; i < args.length; i++) {
+                            if(i == 1){
+                                tmp_message = tmp_message + args[i];
+                                continue;
+                            }
+                            tmp_message = tmp_message + " " + args[i];
+                        }
+                        p.setMessageSettings(tmp_message, false, player);
+                    }
+                    else{
+                        player.sendMessage(ChatColor.RED + "Message modifier is not turned on");
+                    }
+                    break;
                 case "mobs":
-                    if(p.getMobSettings().isMobModOn()){
+                    if(plugin.isMobModOn()){
                         double insideMobModifier = Double.parseDouble(args[2]);
-                        p.setMobSettings(insideMobModifier, true, player);
+                        p.setInsideMobModifier(insideMobModifier, player);
                     }
                     else{
                         player.sendMessage(ChatColor.RED + "Mob modifier is not turned on");

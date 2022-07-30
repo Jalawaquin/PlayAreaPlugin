@@ -33,7 +33,6 @@ public class turnPlayArea implements CommandExecutor{
         }
 
         try{
-            Plots p = plugin.getAllPlots().get(0);
             if(args.length < 2) {
                 invalidInput(player);
             }
@@ -48,7 +47,7 @@ public class turnPlayArea implements CommandExecutor{
                     }
                     break;
                 case "messages":
-                    if(p.playAreaMessage(args[1].toLowerCase())){
+                    if(plugin.playAreaMessage(args[1].toLowerCase())){
                         player.sendMessage(ChatColor.GREEN + "Message modifier turned on ! Utilize /insideplayarea and /outsideplayarea to modify enter and leaving messages !");
                     }
                     else {
@@ -56,7 +55,7 @@ public class turnPlayArea implements CommandExecutor{
                     }
                     break;
                 case "mobs":
-                    if(p.playAreaMobs(args[1].toLowerCase())){
+                    if(plugin.playAreaMobs(args[1].toLowerCase())){
                         player.sendMessage(ChatColor.GREEN + "Mob modifier turned on ! Utilize /insideplayarea and /outsideplayarea to modify mob damage !");
                     }
                     else{

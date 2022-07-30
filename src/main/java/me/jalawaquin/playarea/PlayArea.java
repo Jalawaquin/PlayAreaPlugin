@@ -11,20 +11,20 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 
 public final class PlayArea extends JavaPlugin {
     //inside and outside plot variables
-
-    private boolean potions;
+    private boolean potions = false;
+    private boolean message = true;
+    private boolean mobs = false;
     private ArrayList<Plots> plots = new ArrayList<>();
     private OutsidePotionSettings outsidePotionSettings= new OutsidePotionSettings();
+    private double outsideMobModifier = 0;
     //Setting up plot variables
     private ArrayList<Location> block_locations = new ArrayList<>();
     private int num_of_locations = 0;
-
 
     @Override
     public void onEnable() {
@@ -41,6 +41,39 @@ public final class PlayArea extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlotAreaListener(this), this);
     }
     //plot modifier functions
+    //messages
+    public boolean isMessageModOn(){return message;}
+    public boolean playAreaMessage(String bool){
+        switch(bool){
+            case "on":
+                message = true;
+                break;
+            case "off":
+                message = false;
+                break;
+        }
+
+        return message;
+    }
+    //mob modifer
+    public void setOutsideMobModifier(Double mobModifier, Player player){
+        outsideMobModifier = mobModifier;
+        player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Mob damage increased by " + mobModifier + " inside the play area"));
+    }
+    
+    public double getOutsideMobModifier(){return this.outsideMobModifier;}
+    public boolean isMobModOn(){return mobs;}
+    public boolean playAreaMobs(String bool){
+        switch(bool){
+            case "on":
+                mobs = true;
+                break;
+            case "off":
+                mobs = false;
+                break;
+        }
+        return mobs;
+    }
     //potions
     public void clearAllPotions(Player player){
         String playerLocation = player.getLocation().getBlockX() + "." + player.getLocation().getBlockZ();

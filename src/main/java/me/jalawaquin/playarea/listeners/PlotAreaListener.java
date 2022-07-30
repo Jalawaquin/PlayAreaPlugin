@@ -56,21 +56,22 @@ public class PlotAreaListener implements Listener {
 
         //if the mob modifier is not on, stop
         // Note: this function seems like it could implemented better
-        Plots p = plugin.getAllPlots().get(0);
+
         //check if mob Modifier turned on (static variable within plots)
-        if(!p.getMobSettings().isMobModOn()){
+        if(!plugin.isMobModOn()){
             return;
         }
 
 
         // if player is damaged and mob modifier is on multiply damage by the modifier value
         if(plugin.insidePlot(playerLocation)){
-            event.setDamage(event.getDamage() + p.getMobSettings().getInsideMobModifier());
-            event.getEntity().sendMessage("Damage Increased by " + event.getDamage() + p.getMobSettings().getInsideMobModifier());
+            Plots p = plugin.getCurrentPlot(playerLocation);
+            event.setDamage(event.getDamage() + p.getInsideMobModifier());
+            event.getEntity().sendMessage("Damage Increased by " + event.getDamage() + p.getInsideMobModifier());
         }
         else if(!plugin.insidePlot(playerLocation)){
-            event.getEntity().sendMessage("Damage Increased by " + event.getDamage() + p.getMobSettings().getOutsideMobModifier());
-            event.setDamage(event.getDamage() + p.getMobSettings().getOutsideMobModifier());
+            event.getEntity().sendMessage("Damage Increased by " + event.getDamage() + plugin.getOutsideMobModifier());
+            event.setDamage(event.getDamage() + plugin.getOutsideMobModifier());
         }
 
     }
@@ -106,8 +107,11 @@ public class PlotAreaListener implements Listener {
                         p.getPotionSettings().getInsideDuration() * 20, p.getPotionSettings().getInsideAmplifier()));
             }
             //if messages mod on
-            if(p.getMessageSettings().isMessageModOn()){
+            if(plugin.isMessageModOn() && p.getMessageSettings().getEnterMessage().equals("You are now entering play area: ")){
                 player.sendMessage(ChatColor.YELLOW + (ChatColor.ITALIC + p.getMessageSettings().getEnterMessage() + p.getPlotID()));
+            }
+            else if (plugin.isMessageModOn()){
+                player.sendMessage(ChatColor.YELLOW + (ChatColor.ITALIC + p.getMessageSettings().getEnterMessage()));
             }
         }
         else if (!plugin.insidePlot(currentBlockTo) && plugin.insidePlot(currentBlockFrom)){
@@ -125,12 +129,12 @@ public class PlotAreaListener implements Listener {
                         plugin.getOutsidePotionSettings().getOutsideDuration() * 20, plugin.getOutsidePotionSettings().getOutsideAmplifier()));
             }
 
-            if(p.getMessageSettings().isMessageModOn() && p.getMessageSettings().getLeaveMessage().equals("You are now leaving play area: ")){
+            if(plugin.isMessageModOn() && p.getMessageSettings().getLeaveMessage().equals("You are now leaving play area: ")){
                 player.sendMessage(ChatColor.RED + (ChatColor.ITALIC + p.getMessageSettings().getLeaveMessage() + p.getPlotID()));
             }
-
-
+            else if (plugin.isMessageModOn()){
+                player.sendMessage(ChatColor.RED + (ChatColor.ITALIC + p.getMessageSettings().getLeaveMessage()));
+            }
         }
-
     }
 }
