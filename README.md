@@ -1,4 +1,4 @@
-
+#PlayAreaPlugin
 The PlayAreaPlugin is a tool to create plots that apply status effects to players.
 If a player wanders in or out of any of these plots, customizable messages, potion effects, & mob damage can be set.
 
@@ -31,6 +31,6 @@ Note: Universal (everytime you step out from inside a plot, these custom setting
                  <potions> <type> <duration> <amplifier>
                  <mobs> <damage>
 ```
+## Helpful Links
+-Potion Effects List: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html
 
-potions list
-https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html
