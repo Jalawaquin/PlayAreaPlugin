@@ -1,6 +1,7 @@
 package me.jalawaquin.playarea.events;
 
 import me.jalawaquin.playarea.PlayArea;
+import me.jalawaquin.playarea.PlayAreaInfo;
 import me.jalawaquin.playarea.settings.Plots;
 
 import org.bukkit.ChatColor;
@@ -18,8 +19,8 @@ import static org.bukkit.Bukkit.getServer;
 import java.util.ArrayList;
 
 public class PlayEvents implements Listener {
-    private PlayArea plugin;
-    public PlayEvents(PlayArea plugin){
+    private PlayAreaInfo plugin;
+    public PlayEvents(PlayAreaInfo plugin){
         this.plugin = plugin;
     }
 

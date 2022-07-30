@@ -1,6 +1,6 @@
 package me.jalawaquin.playarea.listeners;
 
-import me.jalawaquin.playarea.PlayArea;
+import me.jalawaquin.playarea.PlayAreaInfo;
 import me.jalawaquin.playarea.settings.Plots;
 import me.jalawaquin.playarea.events.PlotAreaEvent;
 
@@ -11,16 +11,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.Objects;
 
 
 public class PlotAreaListener implements Listener {
-    private PlayArea plugin;
+    private PlayAreaInfo playAreaInfo;
 
-    public PlotAreaListener(PlayArea plugin){
-        this.plugin = plugin;
+    public PlotAreaListener(PlayAreaInfo plugin){
+        this.playAreaInfo = plugin;
     }
 
     @EventHandler
@@ -28,7 +27,7 @@ public class PlotAreaListener implements Listener {
         Plots p = new Plots();
         p.setBlockArea(event.getPlotArea());
 
-        if(!plugin.addPlot(p)){
+        if(!playAreaInfo.addPlot(p)){
             event.getPlayer().sendMessage(ChatColor.RED + "Failed. Plot overlaps with another plot");
             return;
         }
@@ -39,7 +38,7 @@ public class PlotAreaListener implements Listener {
     @EventHandler
     public void onDamageEvent(EntityDamageByEntityEvent event){
         //if there are no plots, stop
-        if (plugin.getAllPlots().isEmpty()){
+        if (playAreaInfo.getAllPlots().isEmpty()){
             return;
         }
 
@@ -47,6 +46,7 @@ public class PlotAreaListener implements Listener {
         if(event.getDamager() instanceof Player){
             return;
         }
+        //add check for arrow
 
         //if the entity being damaged was not a player, stop
         if(!(event.getEntity() instanceof Player)){
@@ -55,23 +55,22 @@ public class PlotAreaListener implements Listener {
         String playerLocation = event.getEntity().getLocation().getBlockX() + "." + event.getEntity().getLocation().getBlockZ();
 
         //if the mob modifier is not on, stop
-        // Note: this function seems like it could implemented better
-
         //check if mob Modifier turned on (static variable within plots)
-        if(!plugin.isMobModOn()){
+        if(!playAreaInfo.isMobModOn()){
             return;
         }
 
 
         // if player is damaged and mob modifier is on multiply damage by the modifier value
-        if(plugin.insidePlot(playerLocation)){
-            Plots p = plugin.getCurrentPlot(playerLocation);
+        if(playAreaInfo.insidePlot(playerLocation)){
+            Plots p = playAreaInfo.getCurrentPlot(playerLocation);
             event.setDamage(event.getDamage() + p.getInsideMobModifier());
-            event.getEntity().sendMessage("Damage Increased by " + event.getDamage() + p.getInsideMobModifier());
+            //event.getEntity().sendMessage("Damage Increased by " + event.getDamage() + p.getInsideMobModifier());
         }
-        else if(!plugin.insidePlot(playerLocation)){
-            event.getEntity().sendMessage("Damage Increased by " + event.getDamage() + plugin.getOutsideMobModifier());
-            event.setDamage(event.getDamage() + plugin.getOutsideMobModifier());
+        else if(!playAreaInfo.insidePlot(playerLocation)){
+            //test
+            //event.getEntity().sendMessage("Damage Increased by " + event.getDamage() + plugin.getOutsideMobModifier());
+            event.setDamage(event.getDamage() + playAreaInfo.getOutsideMobModifier());
         }
 
     }
@@ -79,7 +78,7 @@ public class PlotAreaListener implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event){
-        if(plugin.getAllPlots().isEmpty()){
+        if(playAreaInfo.getAllPlots().isEmpty()){
             return;
         }
         Player player = event.getPlayer();
@@ -90,49 +89,49 @@ public class PlotAreaListener implements Listener {
         String currentBlockFrom = event.getFrom().getBlockX() + "." + event.getFrom().getBlockZ();
 
         //When player enters playarea (if one exists) send message and apply/remove correct modifers
-        if ((plugin.insidePlot(currentBlockTo) && !plugin.insidePlot(currentBlockFrom))){
+        if ((playAreaInfo.insidePlot(currentBlockTo) && !playAreaInfo.insidePlot(currentBlockFrom))){
             //temp plot variable
-            Plots p = plugin.getCurrentPlot(currentBlockTo);
+            Plots p = playAreaInfo.getCurrentPlot(currentBlockTo);
             // Remove outside potion effects if outsidePotionEffect not null
 
-            if(plugin.isPotionsModOn() && plugin.getOutsidePotionSettings().getOutsidePotion() != null){
-                player.removePotionEffect(Objects.requireNonNull((plugin.getOutsidePotionSettings().getOutsidePotion())));
+            if(playAreaInfo.isPotionsModOn() && playAreaInfo.getOutsidePotionSettings().getOutsidePotion() != null){
+                player.removePotionEffect(Objects.requireNonNull((playAreaInfo.getOutsidePotionSettings().getOutsidePotion())));
             }
 
             //if potions modifier is on
-            if (plugin.isPotionsModOn() && p.getPotionSettings().getInsideDuration() != null
+            if (playAreaInfo.isPotionsModOn() && p.getPotionSettings().getInsideDuration() != null
                     && p.getPotionSettings().getInsideAmplifier() != null && p.getPotionSettings().getInsidePotion() != null) {
                 // Add Effects if player is inside plot
                 player.addPotionEffect(new PotionEffect(Objects.requireNonNull(p.getPotionSettings().getInsidePotion()),
                         p.getPotionSettings().getInsideDuration() * 20, p.getPotionSettings().getInsideAmplifier()));
             }
             //if messages mod on
-            if(plugin.isMessageModOn() && p.getMessageSettings().getEnterMessage().equals("You are now entering play area: ")){
+            if(playAreaInfo.isMessageModOn() && p.getMessageSettings().getEnterMessage().equals("You are now entering play area: ")){
                 player.sendMessage(ChatColor.YELLOW + (ChatColor.ITALIC + p.getMessageSettings().getEnterMessage() + p.getPlotID()));
             }
-            else if (plugin.isMessageModOn()){
+            else if (playAreaInfo.isMessageModOn()){
                 player.sendMessage(ChatColor.YELLOW + (ChatColor.ITALIC + p.getMessageSettings().getEnterMessage()));
             }
         }
-        else if (!plugin.insidePlot(currentBlockTo) && plugin.insidePlot(currentBlockFrom)){
-            Plots p = plugin.getCurrentPlot(currentBlockFrom);
+        else if (!playAreaInfo.insidePlot(currentBlockTo) && playAreaInfo.insidePlot(currentBlockFrom)){
+            Plots p = playAreaInfo.getCurrentPlot(currentBlockFrom);
             // Remove inside potion effects if outsidePotionEffect not null
-            if(plugin.isPotionsModOn() && p.getPotionSettings().getInsidePotion() != null){
+            if(playAreaInfo.isPotionsModOn() && p.getPotionSettings().getInsidePotion() != null){
                 player.removePotionEffect(Objects.requireNonNull(p.getPotionSettings().getInsidePotion()));
             }
 
             // if potions modifier turned on
-            if(plugin.isPotionsModOn() && plugin.getOutsidePotionSettings().getOutsidePotion() != null &&  plugin.getOutsidePotionSettings().getOutsideDuration() != null
-                    &&  plugin.getOutsidePotionSettings().getOutsideAmplifier() != null ){
+            if(playAreaInfo.isPotionsModOn() && playAreaInfo.getOutsidePotionSettings().getOutsidePotion() != null &&  playAreaInfo.getOutsidePotionSettings().getOutsideDuration() != null
+                    &&  playAreaInfo.getOutsidePotionSettings().getOutsideAmplifier() != null ){
                 //Add Effects if player is outside plot
-                player.addPotionEffect(new PotionEffect(Objects.requireNonNull(plugin.getOutsidePotionSettings().getOutsidePotion()),
-                        plugin.getOutsidePotionSettings().getOutsideDuration() * 20, plugin.getOutsidePotionSettings().getOutsideAmplifier()));
+                player.addPotionEffect(new PotionEffect(Objects.requireNonNull(playAreaInfo.getOutsidePotionSettings().getOutsidePotion()),
+                        playAreaInfo.getOutsidePotionSettings().getOutsideDuration() * 20, playAreaInfo.getOutsidePotionSettings().getOutsideAmplifier()));
             }
 
-            if(plugin.isMessageModOn() && p.getMessageSettings().getLeaveMessage().equals("You are now leaving play area: ")){
+            if(playAreaInfo.isMessageModOn() && p.getMessageSettings().getLeaveMessage().equals("You are now leaving play area: ")){
                 player.sendMessage(ChatColor.RED + (ChatColor.ITALIC + p.getMessageSettings().getLeaveMessage() + p.getPlotID()));
             }
-            else if (plugin.isMessageModOn()){
+            else if (playAreaInfo.isMessageModOn()){
                 player.sendMessage(ChatColor.RED + (ChatColor.ITALIC + p.getMessageSettings().getLeaveMessage()));
             }
         }

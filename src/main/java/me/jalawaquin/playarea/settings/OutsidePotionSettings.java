@@ -1,6 +1,6 @@
 package me.jalawaquin.playarea.settings;
 
-import me.jalawaquin.playarea.PlayArea;
+import me.jalawaquin.playarea.PlayAreaInfo;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -26,7 +26,7 @@ public class OutsidePotionSettings {
         this.outsideAmplifier = outsideAmplifier;
     }
 
-    public void setOutsidePotionType(PlayArea plugin, Player player, PotionEffectType outsidePotion, Integer outsideDuration, Integer outsideAmplifier){
+    public void setOutsidePotionType(PlayAreaInfo playAreaInfo, Player player, PotionEffectType outsidePotion, Integer outsideDuration, Integer outsideAmplifier){
         if(outsidePotion != null){
             player.removePotionEffect(Objects.requireNonNull(outsidePotion));
         }
@@ -36,7 +36,7 @@ public class OutsidePotionSettings {
         String playerLocation = player.getLocation().getBlockX() + "." + player.getLocation().getBlockZ();
 
         //if player is in none of the plot block areas apply
-        if(!plugin.insidePlot(playerLocation)){
+        if(!playAreaInfo.insidePlot(playerLocation)){
             if(outsideDuration != null && outsideAmplifier != null){
                 //Add Effects if player is outside plot
                 player.addPotionEffect(new PotionEffect(Objects.requireNonNull(outsidePotion), outsideDuration * 20, outsideAmplifier));

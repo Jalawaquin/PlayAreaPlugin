@@ -1,6 +1,6 @@
 package me.jalawaquin.playarea.commands;
 
-import me.jalawaquin.playarea.PlayArea;
+import me.jalawaquin.playarea.PlayAreaInfo;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,10 +9,10 @@ import org.bukkit.entity.Player;
 
 public class getPlayAreaID implements CommandExecutor {
 
-    private PlayArea plugin;
+    private PlayAreaInfo playAreaInfo;
 
-    public getPlayAreaID(PlayArea plugin){
-        this.plugin = plugin;
+    public getPlayAreaID(PlayAreaInfo playAreaInfo){
+        this.playAreaInfo = playAreaInfo;
     }
 
     @Override
@@ -28,18 +28,18 @@ public class getPlayAreaID implements CommandExecutor {
             return false;
         }
 
-        if(plugin.getAllPlots().isEmpty()){
+        if(playAreaInfo.getAllPlots().isEmpty()){
             player.sendMessage(ChatColor.RED + "Cannot get play area ID. No play areas exist");
             return false;
         }
         String playerLocation = player.getLocation().getBlockX() + "." + player.getLocation().getBlockZ();
 
-        if(!plugin.insidePlot(playerLocation)){
+        if(!playAreaInfo.insidePlot(playerLocation)){
             player.sendMessage(ChatColor.RED + "Cannot get play area ID. You are not inside a play area");
             return false;
         }
 
-        player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Current Play Area ID: " + plugin.getCurrentPlot(playerLocation).getPlotID()));
+        player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Current Play Area ID: " + playAreaInfo.getCurrentPlot(playerLocation).getPlotID()));
 
         return false;
     }

@@ -50,7 +50,7 @@ public class PlayAreaPotionSettings {
             }
         }
 
-        player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + insidePotion.getName() + " potion applied to inside of play area"));
+ //       player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + insidePotion.getName() + " potion applied to inside of play area"));
     }
 
     public PotionEffectType getInsidePotion(){

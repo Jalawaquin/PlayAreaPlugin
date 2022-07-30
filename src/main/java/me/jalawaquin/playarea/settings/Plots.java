@@ -28,7 +28,7 @@ public class Plots {
     // mob damage settings
     public void setInsideMobModifier(Double mobModifier, Player player){
         insideMobModifier = mobModifier;
-        player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Mob damage increased by " + mobModifier + " inside the play area"));
+        //player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Mob damage increased by " + mobModifier + " inside the play area"));
     }
 
     public double getInsideMobModifier(){return this.insideMobModifier;}
@@ -37,11 +37,11 @@ public class Plots {
     public void setMessageSettings(String message, boolean inside, Player player){
         if(inside){
             messageSettings.setEnterMessage(message);
-            player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Enter message successfully set !"));
+            //player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Enter message successfully set !"));
         }
         else{
             messageSettings.setLeaveMessage(message);
-            player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Leave message successfully set !"));
+            //player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Leave message successfully set !"));
         }
     }
     // potion functions

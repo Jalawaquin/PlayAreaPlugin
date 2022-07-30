@@ -1,6 +1,6 @@
 package me.jalawaquin.playarea.commands;
 
-import me.jalawaquin.playarea.PlayArea;
+import me.jalawaquin.playarea.PlayAreaInfo;
 import me.jalawaquin.playarea.settings.Plots;
 
 import org.bukkit.ChatColor;
@@ -10,11 +10,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
-public class insidePlayArea implements CommandExecutor{
-    private PlayArea plugin;
+import java.util.ArrayList;
 
-    public insidePlayArea(PlayArea plugin){
-        this.plugin = plugin;
+public class insidePlayArea implements CommandExecutor{
+    private PlayAreaInfo playAreaInfo;
+
+    public insidePlayArea(PlayAreaInfo playAreaInfo){
+        this.playAreaInfo = playAreaInfo;
     }
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
@@ -29,11 +31,10 @@ public class insidePlayArea implements CommandExecutor{
             return false;
         }
 
-        if(plugin.getAllPlots().isEmpty()){
+        if(playAreaInfo.getAllPlots().isEmpty()){
             player.sendMessage(ChatColor.RED + "Cannot modify inside of play area. No play area exists");
             return false;
         }
-
 
         // Note: make this cleaner
         if(args.length < 2) {
@@ -42,7 +43,6 @@ public class insidePlayArea implements CommandExecutor{
         }
 
         try{
-            Plots p = plugin.getAllPlots().get(Integer.parseInt(args[0]));
             switch(args[1].toLowerCase()){
                 case "potions":
                     if(args.length < 3) {
@@ -50,55 +50,95 @@ public class insidePlayArea implements CommandExecutor{
                         break;
                     }
 
-                    if(plugin.isPotionsModOn()){
-                        PotionEffectType potionType = PotionEffectType.getByName(args[2].toUpperCase());
-                        Integer duration = Integer.parseInt(args[3]);
-                        Integer amplifier = Integer.parseInt(args[4]);
-
-                        p.getPotionSettings().setInsidePotionType(p.getBlockArea(), player, potionType, duration, amplifier);
-                    }
-                    else{
+                    if(!playAreaInfo.isPotionsModOn()){
                         player.sendMessage(ChatColor.RED + "Potions modifier is not turned on");
+                        break;
+                    }
+
+                    PotionEffectType potionType = PotionEffectType.getByName(args[2].toUpperCase());
+                    Integer duration = Integer.parseInt(args[3]);
+                    Integer amplifier = Integer.parseInt(args[4]);
+
+                    if(args[0].equalsIgnoreCase("all")){
+                        ArrayList<Plots> allPlots = playAreaInfo.getAllPlots();
+
+                        for(Plots p: allPlots){
+                            p.getPotionSettings().setInsidePotionType(p.getBlockArea(), player, potionType, duration, amplifier);
+                        }
+
+                        player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + potionType.getName() + " potion applied to inside of all play areas"));
+                    }else{
+                        Plots p = playAreaInfo.getAllPlots().get(Integer.parseInt(args[0]));
+                        p.getPotionSettings().setInsidePotionType(p.getBlockArea(), player, potionType, duration, amplifier);
+
+                        player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + potionType.getName() + " potion applied to inside of play area: " + args[0]));
                     }
                     break;
                 case "entermessage":
-                    if(plugin.isMessageModOn()){
-                        String tmp_message = "";
-
-                        for(int i = 2; i < args.length; i++) {
-                            if(i == 2){
-                                tmp_message = tmp_message + args[i];
-                                continue;
-                            }
-                            tmp_message = tmp_message + " " + args[i];
-                        }
-                        p.setMessageSettings(tmp_message, true, player);
-                    }
-                    else{
+                    if(!playAreaInfo.isMessageModOn()){
                         player.sendMessage(ChatColor.RED + "Message modifier is not turned on");
+                        break;
+                    }
+
+                    String tmp_entermessage = argsToMessage(args);
+
+                    if(args[0].equalsIgnoreCase("all")){
+                        ArrayList<Plots> allPlots = playAreaInfo.getAllPlots();
+
+                        for(Plots p: allPlots){
+                            p.setMessageSettings(tmp_entermessage, true, player);
+                        }
+
+                        player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Enter message successfully set to all play areas!"));
+                    }else{
+                        Plots p = playAreaInfo.getAllPlots().get(Integer.parseInt(args[0]));
+                        p.setMessageSettings(tmp_entermessage, true, player);
+
+                        player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Enter message successfully set for play area: " + args[0] + "!"));
                     }
                     break;
                 case "leavemessage":
-                    if(plugin.isMessageModOn()){
-                        String tmp_message = "";
-
-                        for(int i = 1; i < args.length; i++) {
-                            if(i == 1){
-                                tmp_message = tmp_message + args[i];
-                                continue;
-                            }
-                            tmp_message = tmp_message + " " + args[i];
-                        }
-                        p.setMessageSettings(tmp_message, false, player);
-                    }
-                    else{
+                    if(!playAreaInfo.isMessageModOn()){
                         player.sendMessage(ChatColor.RED + "Message modifier is not turned on");
+                        break;
+                    }
+
+                    String tmp_leavemessage = argsToMessage(args);
+
+                    if(args[0].equalsIgnoreCase("all")){
+                        ArrayList<Plots> allPlots = playAreaInfo.getAllPlots();
+
+                        for(Plots p: allPlots){
+                            p.setMessageSettings(tmp_leavemessage, false, player);
+                        }
+
+                        player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Leave message successfully set for all play areas!"));
+
+                    }else{
+                        Plots p = playAreaInfo.getAllPlots().get(Integer.parseInt(args[0]));
+                        p.setMessageSettings(tmp_leavemessage, false, player);
+
+                        player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Leave message successfully set for play area: " + args[0] + "!"));
                     }
                     break;
                 case "mobs":
-                    if(plugin.isMobModOn()){
+                    if(playAreaInfo.isMobModOn()){
                         double insideMobModifier = Double.parseDouble(args[2]);
-                        p.setInsideMobModifier(insideMobModifier, player);
+
+                        if(args[0].equalsIgnoreCase("all")){
+                            ArrayList<Plots> allPlots = playAreaInfo.getAllPlots();
+
+                            for(Plots p: allPlots){
+                                p.setInsideMobModifier(insideMobModifier, player);
+                            }
+
+                            player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Mob damage increased by " + insideMobModifier + " for all play areas"));
+                        }else{
+                            Plots p = playAreaInfo.getAllPlots().get(Integer.parseInt(args[0]));
+                            p.setInsideMobModifier(insideMobModifier, player);
+
+                            player.sendMessage(ChatColor.GREEN + (ChatColor.BOLD + "Mob damage increased by " + insideMobModifier + " for play area: " + args[0] + "!"));
+                        }
                     }
                     else{
                         player.sendMessage(ChatColor.RED + "Mob modifier is not turned on");
@@ -114,7 +154,18 @@ public class insidePlayArea implements CommandExecutor{
         return false;
     }
 
+    private String argsToMessage(String[] args){
+        StringBuilder message = new StringBuilder();
+        for(int i = 2; i < args.length; i++) {
+            if(i == 2){
+                message.append(args[i]);
+                continue;
+            }
+            message.append(" ").append(args[i]);
+        }
 
+        return message.toString();
+    }
     private void invalidInput(Player player){
         player.sendMessage(ChatColor.RED + "Invalid Input. /insideplayarea <plotID> <modtype> <variable> ....");
     }
