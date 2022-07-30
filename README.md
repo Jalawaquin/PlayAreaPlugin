@@ -4,7 +4,6 @@ If a player wanders in or out of any of these plots, customizable messages, poti
 
 Commands:
 ```
-
 /deleteplayarea <plotID> 
 -Desc: deletes plot of specific ID. enter 'all' to clear all plots.
 
@@ -36,7 +35,6 @@ Description: Apply customizable effects to a specific plot. Use 'all' to apply t
                  <potions> <type> <duration> <amplifier>
                  <mobs> <damage>
 Description: Apply customizable effects to player everytime they leave a plot.
-
 ```
 ## Helpful Links
 - Potion Effects List: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html
